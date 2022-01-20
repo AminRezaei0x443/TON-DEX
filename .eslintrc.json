@@ -1,0 +1,26 @@
+{
+    "extends": [
+        "react-app",
+        "react-app/jest",
+        "airbnb",
+        "airbnb-typescript",
+        "prettier"
+    ],
+    "rules": {
+        "no-trailing-spaces": "warn",
+        "react/jsx-one-expression-per-line": "off",
+        "linebreak-style": [
+            "warn",
+            "unix"
+        ],
+        "indent": [
+            "warn",
+            2
+        ]
+    },
+    "parserOptions": {
+        "project": [
+            "./tsconfig.json"
+        ]
+    }
+}

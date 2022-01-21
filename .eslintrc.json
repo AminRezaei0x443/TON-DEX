@@ -8,6 +8,8 @@
     ],
     "rules": {
         "no-trailing-spaces": "warn",
+        "no-multi-spaces": "warn",
+        "object-curly-spacing": "warn",
         "react/jsx-one-expression-per-line": "off",
         "linebreak-style": [
             "warn",

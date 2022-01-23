@@ -1,0 +1,9 @@
+@import "./assets/styles/colors";
+
+.layout {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(to bottom, white, rgba($primary-color, 0.1));
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+}

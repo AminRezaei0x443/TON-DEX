@@ -16,7 +16,7 @@ interface IProps {
 function Tab({items, selected, onChange}:IProps) {
 
   const handleSelection = (index: number) => {
-
+    if (onChange) onChange(index);
   }
 
   return <div

@@ -1,0 +1,42 @@
+@import "../../assets/styles/colors";
+
+$outer-radius: 24px;
+$inner-radius: 16px;
+
+.container {
+  background-color: $primary-light-color;
+  padding: 10px 12px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: $outer-radius;
+  gap: 1rem;
+}
+
+.tab {
+  border-radius: $inner-radius;
+  background-color: transparent;
+  transition: background-color 0.2s, color 0.2s;
+  color: $primary-dark-color;
+  padding: 10px 12px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba($primary-dark-color, 0.1);
+  }
+}
+
+.selected {
+  background-color: $primary-dark-color;
+  color: white;
+
+  &:hover {
+    background-color: $primary-dark-color;
+  }
+}

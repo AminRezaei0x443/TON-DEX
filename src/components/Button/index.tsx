@@ -9,7 +9,7 @@ HTMLButtonElement
 & { title:string };
 
 /* eslint-disable react/jsx-props-no-spreading */
-function Button({ title, ...props }:Props) {
+function Button({title, ...props}:Props) {
   return <button
     className={styles.button}
     type="button" {...props}>{title}</button>;

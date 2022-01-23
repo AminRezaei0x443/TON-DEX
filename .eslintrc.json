@@ -14,7 +14,11 @@
             "warn",
             2
         ],
-        "@typescript-eslint/no-unused-vars": "warn"
+        "@typescript-eslint/no-unused-vars": "warn",
+        "quotes": [
+            "warn",
+            "double"
+        ]
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {

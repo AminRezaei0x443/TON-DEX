@@ -1,0 +1,17 @@
+@mixin hover-darken {
+  transition: filter 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+}
+
+@mixin hover-lighten {
+  transition: filter 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+}

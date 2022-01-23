@@ -1,5 +1,65 @@
-.button{
-    // button styles
-    outline: none; 
-    border:   none;      
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
+
+$radius: 18px;
+$radius-large: 16px;
+
+.button {
+  outline: none;
+  border: none;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+
+  @include hover-darken;
+}
+
+%default {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+%primary {
+  @extend %default;
+
+  background-color: $primary-color;
+  color: white;
+}
+
+%secondary {
+  @extend %default;
+
+  background-color: $primary-light-color;
+  color: $primary-dark-color;
+}
+
+%normal {
+  padding: 0.5rem 1.5rem;
+  border-radius: $radius;
+}
+
+%large {
+  border-radius: $radius-large;
+  padding: 1rem 2rem;
+}
+
+.primary {
+  @extend %primary;
+  @extend %normal;
+}
+
+.primaryLarge {
+  @extend %primary;
+  @extend %large;
+}
+
+.secondary {
+  @extend %secondary;
+  @extend %normal;
+}
+
+.secondaryLarge {
+  @extend %secondary;
+  @extend %large;
 }

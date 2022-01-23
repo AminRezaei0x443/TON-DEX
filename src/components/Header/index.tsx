@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {connect, disconnect, selectAccount} from "../../redux/reducers/account";
 import Button from "../Button";
@@ -36,7 +37,9 @@ export default function Header() {
 
   return (
     <div className={styles.header}>
-      <Brand/>
+      <Link to='/'>
+        <Brand/>
+      </Link>
       <Tab items={TAB_ITEMS} selected={0}/>
       <Button
         title={buttonText()}

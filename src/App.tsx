@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import "./App.scss";
 import Header from "./components/Header";
+import Notifications from "./components/Notifications";
 import NotFound from "./pages/NotFound";
 import SwapPage from "./pages/Swap";
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="*" element={<NotFound/>}/>
         </Routes>
       </div>
+      <Notifications />
     </div>
   );
 }

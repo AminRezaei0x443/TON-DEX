@@ -1,9 +1,11 @@
-import {configureStore} from '@reduxjs/toolkit';
-import account from './reducers/account';
+import {configureStore} from "@reduxjs/toolkit";
+import account from "./reducers/account";
+import notifications from "./reducers/notifications";
 
 export const store = configureStore({
   reducer: {
     account,
+    notifications
   },
 })
 

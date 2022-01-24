@@ -2,12 +2,27 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {connectWallet, disconnectWallet} from "../../api/wallet";
 import {RootState} from "../store";
 import type {AccountState, WalletAddress} from "../types/account";
+import {notification} from "./notifications";
 
 const initialState :AccountState ={
   walletAddress:null,
 }
 
-export const connect = createAsyncThunk("account/connect", async () => connectWallet())
+const NOTIFICATION_TIMEOUT = 2000;
+
+export const connect = createAsyncThunk("account/connect", async (_, thunkAPI) => {
+  const res = await connectWallet()
+  if (res !== null){
+    thunkAPI.dispatch(notification({message:"Successfully connected to wallet.",
+      type:"success",
+      timeout:NOTIFICATION_TIMEOUT}))
+  }else{
+    thunkAPI.dispatch(notification({message:"Could not connect to wallet.",
+      type:"failure",
+      timeout:NOTIFICATION_TIMEOUT}))
+  }
+  return res
+})
 export const disconnect = createAsyncThunk("account/disconnect", async () => disconnectWallet())
 
 const handleWallet = (state:AccountState, {payload}:PayloadAction<WalletAddress>) => {

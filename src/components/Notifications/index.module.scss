@@ -1,0 +1,57 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
+
+.container {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 5;
+}
+
+.toast {
+  width: 250px;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 3px rgba(black, 0.1);
+  position: relative;
+
+  @include hover-darken;
+}
+
+.normal {
+  background-color: $toast-background-color;
+}
+
+.success {
+  background-color: $toast-success-background-color;
+}
+
+.failure {
+  background-color: $toast-failure-background-color;
+}
+
+.slideIn {
+  left: 125%;
+  opacity: 0;
+
+  &Active {
+    left: 0;
+    opacity: 1;
+    transition: left 0.5s, opacity 0.5s;
+  }
+}
+
+.slideOut {
+  left: 0;
+  opacity: 1;
+
+  &Active {
+    left: 125%;
+    opacity: 1;
+    transition: left 0.5s, opacity 0.5s;
+  }
+}

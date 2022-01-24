@@ -1,0 +1,47 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
+
+$border-color: #dedfe4;
+$border-radius: 50px;
+
+.panel {
+  border: solid 2px $border-color;
+  border-radius: $border-radius;
+  padding: 2rem 3rem;
+  display: flex;
+  background-color: white;
+  flex-flow: column nowrap;
+  max-width: 550px;
+  min-width: 250px;
+}
+
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+
+  .text {
+    h2 {
+      margin: 0 0 1rem;
+      font-weight: 700;
+    }
+
+    span {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 0.5rem;
+
+    svg {
+      @include hover-lighten;
+    }
+  }
+}

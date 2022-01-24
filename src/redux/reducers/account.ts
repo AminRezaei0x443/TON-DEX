@@ -23,7 +23,19 @@ export const connect = createAsyncThunk("account/connect", async (_, thunkAPI) =
   }
   return res
 })
-export const disconnect = createAsyncThunk("account/disconnect", async () => disconnectWallet())
+export const disconnect = createAsyncThunk("account/disconnect", async (_, thunkAPI) => {
+  const res = await disconnectWallet()
+  if (res === null){
+    thunkAPI.dispatch(notification({message:"Successfully disconnected from wallet.",
+      type:"success",
+      timeout:NOTIFICATION_TIMEOUT}))
+  }else{
+    thunkAPI.dispatch(notification({message:"There was a problem disconnecting from wallet.",
+      type:"failure",
+      timeout:NOTIFICATION_TIMEOUT}))
+  }
+  return res;
+})
 
 const handleWallet = (state:AccountState, {payload}:PayloadAction<WalletAddress>) => {
   state.walletAddress = payload;

@@ -1,7 +1,6 @@
 @import "../../assets/styles/colors";
 @import "../../assets/styles/mixins";
 
-$border-color: #dedfe4;
 $border-radius: 50px;
 
 .panel {
@@ -44,4 +43,43 @@ $border-radius: 50px;
       @include hover-lighten;
     }
   }
+}
+
+.switchButton {
+  margin: 1rem 0;
+  align-self: center;
+  border: 2px solid $border-color;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: white;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  svg {
+    height: 14px;
+    width: 14px;
+    transition: transform 0.2s;
+  }
+
+  @include hover-lighten;
+
+  &:hover {
+    svg {
+      transform: rotate(-180deg);
+    }
+  }
+}
+
+.info {
+  display: inline-flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  font-size: 1rem;
+  font-weight: 400;
+  gap: 10px;
+  margin: 1rem 0;
 }

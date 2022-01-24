@@ -15,6 +15,16 @@ $radius-large: 16px;
   @include hover-darken;
 }
 
+.loading {
+  @include disabled;
+}
+
+@keyframes loading-anim {
+  to {
+    clip-path: inset(0 -1ch 0 0);
+  }
+}
+
 %default {
   font-weight: 700;
   font-size: 1rem;

@@ -33,3 +33,9 @@ SecondaryLarge.args = {
   buttonType: "secondaryLarge",
   title:"Secondary Large Button"
 };
+export const LoadingButton = Template.bind({});
+LoadingButton.args = {
+  buttonType: "primary",
+  title:"Loading Button",
+  loading:true
+};

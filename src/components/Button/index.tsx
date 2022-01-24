@@ -14,11 +14,11 @@ HTMLButtonElement
 >
 & {
   title:string,
+  loading?:boolean,
   buttonType?:ButtonType|string
 };
 
-/* eslint-disable react/jsx-props-no-spreading */
-function Button({title,buttonType, ...props}:Props) {
+export default function Button({title,buttonType,loading, ...props}:Props) {
   return <button
     className={cn({
       [styles.button]:true,
@@ -26,7 +26,7 @@ function Button({title,buttonType, ...props}:Props) {
       [styles.primaryLarge]: buttonType === ButtonType.PrimaryLarge,
       [styles.secondary]: buttonType === ButtonType.Secondary,
       [styles.secondaryLarge]: buttonType === ButtonType.SecondaryLarge,
+      [styles.loading]: loading
     })}
-    type="button" {...props}>{title}</button>;
+    type="button" {...props}>{ title }</button>;
 }
-export default Button

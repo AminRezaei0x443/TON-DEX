@@ -10,8 +10,10 @@ const initialState :NotificationsState = {
 
 export const notification = createAsyncThunk("notifications/add",
   async (notification:Partial<Notification>&{timeout?:number}, thunkAPI) => {
-    const date = new Date()
-    notification.timestamp = date.getMilliseconds();
+    if (!notification.timestamp){
+      const date = new Date()
+      notification.timestamp = date.getMilliseconds();
+    }
     if (notification.message === undefined){
       notification.message = "";
     }

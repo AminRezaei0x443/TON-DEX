@@ -13,5 +13,5 @@ export default function Header() {
       <Settings/>
       <Trending/>
     </div>
-  </div>
+  </div>;
 }

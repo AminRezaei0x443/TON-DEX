@@ -1,7 +1,7 @@
-import {useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {connect, selectAccount} from "../../redux/reducers/account";
-import {notification} from "../../redux/reducers/notifications";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { connect, selectAccount } from "../../redux/reducers/account";
+import { notification } from "../../redux/reducers/notifications";
 import Button from "../Button";
 import Info from "../icons/Info";
 import SwapInput from "../SwapInput";
@@ -18,11 +18,11 @@ export default function SwapPanel() {
 
   const handleSwap = () => {
     if (!connected) {
-      dispatch(connect())
+      dispatch(connect());
     }else{
-      dispatch(notification({message:"Hi n!!"}))
+      dispatch(notification({ message:"Hi n!!" }));
     }
-  }
+  };
 
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(0);
@@ -32,7 +32,7 @@ export default function SwapPanel() {
     const temp = to;
     setTo(from);
     setFrom(temp);
-  }
+  };
 
   return (
     <div className={styles.panel}>
@@ -48,7 +48,7 @@ export default function SwapPanel() {
         title={connected?"Swap": "Connect To Wallet"}
         onClick={handleSwap}/>
     </div>
-  )
+  );
 }
 
 

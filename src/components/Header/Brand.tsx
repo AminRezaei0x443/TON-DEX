@@ -8,5 +8,5 @@ export default function Brand() {
       <Logo/>
       <h3>TON DEX</h3>
     </div>
-  )
+  );
 }

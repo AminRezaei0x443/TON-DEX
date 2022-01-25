@@ -6,5 +6,5 @@ export default function SwapPage() {
     <div className={styles.container}>
       <SwapPanel/>
     </div>
-  )
+  );
 }

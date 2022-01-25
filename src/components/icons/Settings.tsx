@@ -1,7 +1,7 @@
-import React, {SVGProps} from "react"
+import React, { SVGProps } from "react";
 
 
-export default function Settings({...props}: SVGProps<SVGSVGElement> ) {
+export default function Settings({ ...props }: SVGProps<SVGSVGElement> ) {
   return <svg xmlns="http://www.w3.org/2000/svg" width={34} height={34} {...props}>
     <circle
       data-name="Ellipse 62"
@@ -24,6 +24,6 @@ export default function Settings({...props}: SVGProps<SVGSVGElement> ) {
       strokeLinejoin="round"
       strokeWidth={2}
     />
-  </svg>
+  </svg>;
 }
 

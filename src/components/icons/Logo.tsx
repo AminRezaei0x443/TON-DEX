@@ -1,7 +1,7 @@
-import React, {SVGProps} from "react"
+import React, { SVGProps } from "react";
 
 
-export default function Logo({...props}: SVGProps<SVGSVGElement> ) {
+export default function Logo({ ...props }: SVGProps<SVGSVGElement> ) {
   return <svg
     xmlns="http://www.w3.org/2000/svg"
     width={49.371}
@@ -47,6 +47,6 @@ export default function Logo({...props}: SVGProps<SVGSVGElement> ) {
       <path data-name="Path 9" d="m17.938 10.552 4.054 7.025" />
       <path data-name="Path 10" d="M38.155 22.23h-8.081" />
     </g>
-  </svg>
+  </svg>;
 }
 

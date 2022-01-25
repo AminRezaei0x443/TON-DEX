@@ -18,7 +18,7 @@ HTMLButtonElement
   buttonType?:ButtonType|string
 };
 
-export default function Button({title,buttonType,loading, ...props}:Props) {
+export default function Button({ title,buttonType,loading, ...props }:Props) {
   return <button
     className={cn({
       [styles.button]:true,

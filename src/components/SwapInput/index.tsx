@@ -8,15 +8,15 @@ interface IProps {
     onChange?: (value: number) => void;
 }
 
-export default function SwapInput({label,onChange, value}:IProps) {
+export default function SwapInput({ label,onChange, value }:IProps) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = event.currentTarget;
+    const { value } = event.currentTarget;
     if (!!onChange && value.match(/^\d*(\.\d+)?$/g)){
       const returnValue = parseFloat(value);
-      onChange(Number.isNaN(returnValue) ? 0 : returnValue)
+      onChange(Number.isNaN(returnValue) ? 0 : returnValue);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -39,5 +39,5 @@ export default function SwapInput({label,onChange, value}:IProps) {
         </span>
       </div>
     </div>
-  )
+  );
 }

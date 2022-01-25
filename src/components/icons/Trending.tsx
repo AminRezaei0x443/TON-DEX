@@ -1,7 +1,7 @@
-import React, {SVGProps} from "react"
+import React, { SVGProps } from "react";
 
 
-export default function Trending({...props}: SVGProps<SVGSVGElement> ) {
+export default function Trending({ ...props }: SVGProps<SVGSVGElement> ) {
   return <svg
     xmlns="http://www.w3.org/2000/svg"
     width={34.828}
@@ -21,6 +21,6 @@ export default function Trending({...props}: SVGProps<SVGSVGElement> ) {
       />
       <path data-name="Path 257" d="M24.687 1.414h8.727v8.727" />
     </g>
-  </svg>
+  </svg>;
 }
 

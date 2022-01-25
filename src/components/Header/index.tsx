@@ -1,7 +1,7 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {connect, disconnect, selectAccount} from "../../redux/reducers/account";
+import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { connect, disconnect, selectAccount } from "../../redux/reducers/account";
 import Button from "../Button";
 import Info from "../icons/Info";
 import Liquidity from "../icons/Liquidity";
@@ -11,9 +11,9 @@ import Brand from "./Brand";
 import styles from "./index.module.scss";
 
 const TAB_ITEMS = [
-  {icon:Swap, label:"Swap"},
-  {icon:Liquidity, label:"Liquidity"},
-  {icon:Info, label:"Info"}
+  { icon:Swap, label:"Swap" },
+  { icon:Liquidity, label:"Liquidity" },
+  { icon:Info, label:"Info" }
 ];
 
 export default function Header() {
@@ -26,14 +26,14 @@ export default function Header() {
     if (connected) {
       const beggining = walletState.walletAddress?.slice(0,5)??"";
       const end = walletState.walletAddress?.slice(-3,-1)??"";
-      return `${beggining}...${end}`
+      return `${beggining}...${end}`;
     }
     return "CONNECT";
-  }
+  };
 
   const handleConnect = () => {
-    dispatch(!connected? connect():disconnect())
-  }
+    dispatch(!connected? connect():disconnect());
+  };
 
   return (
     <div className={styles.header}>
@@ -44,9 +44,9 @@ export default function Header() {
       <Button
         title={buttonText()}
         onClick={handleConnect}
-        style={{width:"160px"}}
+        style={{ width:"160px" }}
       />
     </div>
-  )
+  );
 }
 

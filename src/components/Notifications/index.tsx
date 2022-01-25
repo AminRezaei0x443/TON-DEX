@@ -1,10 +1,10 @@
 import cn from "classnames";
 import React from "react";
-import {CSSTransition, TransitionGroup} from "react-transition-group";
-import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {dismissNotification, selectNotifications} from "../../redux/reducers/notifications";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { dismissNotification, selectNotifications } from "../../redux/reducers/notifications";
 import styles from "./index.module.scss";
-import {ToastProps} from "./types";
+import { ToastProps } from "./types";
 
 export default function Notifications() {
   const notificationsState = useAppSelector(selectNotifications);
@@ -12,7 +12,7 @@ export default function Notifications() {
 
 
   const handleClick = (timestamp: number) =>
-    dispatch(dismissNotification(timestamp))
+    dispatch(dismissNotification(timestamp));
 
 
   return <TransitionGroup
@@ -42,7 +42,7 @@ export default function Notifications() {
 }
 
 
-function Toast({message, type = "normal", onClick}:ToastProps){
+function Toast({ message, type = "normal", onClick }:ToastProps){
   return (
     <span
       className={cn({
@@ -54,5 +54,5 @@ function Toast({message, type = "normal", onClick}:ToastProps){
       onClick={onClick}>
       {message}
     </span>
-  )
+  );
 }

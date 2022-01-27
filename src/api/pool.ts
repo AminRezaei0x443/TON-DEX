@@ -1,5 +1,5 @@
 import { Token } from "./tokens";
-import {delay} from "./util";
+import { delay } from "./util";
 
 interface Pool{
     address: string;
@@ -18,8 +18,8 @@ interface PoolInfo{
 }
 
 export const listPools = async (page: number, loadInfo: boolean = true): Promise<Pool[]> => {
-    await delay(100);
-    return [];
+  await delay(100);
+  return [];
 };
 
 interface PoolPositionInfo{
@@ -29,16 +29,16 @@ interface PoolPositionInfo{
 };
 
 export const listPositions = async (address: string): Promise<PoolPositionInfo[]> => {
-    await delay(100);
-    return [];
+  await delay(100);
+  return [];
 };
 
 export const calculateShare = async (pool: string, value: number) : Promise<PoolPositionInfo> => {
-    await delay(100);
-    return {
-        liquidityTokens: 0,
-        share: 0
-    }
+  await delay(100);
+  return {
+    liquidityTokens: 0,
+    share: 0
+  };
 };
 
 interface LPTokenRate{
@@ -47,15 +47,15 @@ interface LPTokenRate{
 }
 
 export const lpTokenRate = async (pool: string, value: number): Promise<LPTokenRate> => {
-    await delay(100);
-    return {
-        token1: 0,
-        token2: 0
-    }
+  await delay(100);
+  return {
+    token1: 0,
+    token2: 0
+  };
 };
 
 export const addLiquidity = async (pool: string, value: number): Promise<void> => {
-    
+
 };
 
 export const removeLiquidity = async (pool: string, value: number): Promise<void> => {

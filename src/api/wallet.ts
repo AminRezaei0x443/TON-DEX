@@ -1,4 +1,4 @@
-import {delay} from "./util";
+import { delay } from "./util";
 
 const FAKE_WALLET_ADDRESS = "EQBfe85YE_7ECghMoHfQA1XViX3KSxj98Kyb8cyNv8vKGEr1";
 
@@ -9,21 +9,21 @@ export class WalletConnector{
   constructor(){
     this.state = WalletConnector.STATE_INACTIVE;
   }
-  
+
   activate = async (): Promise<{account: string}> => {
     await delay(100);
     return {
       account: FAKE_WALLET_ADDRESS
-    }
-  }
+    };
+  };
 
   getAccount = async () : Promise<null | string> => {
     await delay(100);
-    if(this.state == WalletConnector.STATE_INACTIVE){
+    if(this.state === WalletConnector.STATE_INACTIVE){
       return null;
     }
     return FAKE_WALLET_ADDRESS;
-  } 
+  };
 
   reset = () => {
     return null;

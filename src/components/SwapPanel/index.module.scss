@@ -1,7 +1,6 @@
 @import "../../assets/styles/colors";
 @import "../../assets/styles/mixins";
-
-$border-radius: 50px;
+@import "../../assets/styles/constants";
 
 .panel {
   border: solid 2px $border-color;
@@ -10,7 +9,7 @@ $border-radius: 50px;
   display: flex;
   background-color: white;
   flex-flow: column nowrap;
-  max-width: 550px;
+  max-width: 520px;
   min-width: 250px;
 }
 

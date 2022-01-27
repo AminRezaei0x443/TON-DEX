@@ -5,12 +5,28 @@ interface ConversionInfo{
     bwd: number;
 };
 
+const _ratesCache: Map<string, Map<string, number>> = new Map();
+
 export const conversionRate = async (token1: string, token2: string): Promise<ConversionInfo> => {
     await delay(100);
-    return {
-        fwd: 0.4,
-        bwd: 1/0.4
+    let rate = _ratesCache.get(token1)?.get(token2);
+    if(!rate){
+        rate = Math.random();
+        let tR = _ratesCache.get(token1);
+        if(!tR){
+            _ratesCache.set(token1, new Map()); 
+        }
+        tR = _ratesCache.get(token2);
+        if(!tR){
+            _ratesCache.set(token2, new Map()); 
+        }
+        _ratesCache.get(token1)?.set(token2, rate);
+        _ratesCache.get(token2)?.set(token1, 1/rate);
     }
+    return {
+        fwd: rate,
+        bwd: 1/rate
+    };
 };
 
 export const estimateSwapFee = async (value: number, token1: string, token2: string): Promise<number> => {

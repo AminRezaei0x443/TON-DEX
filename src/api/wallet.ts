@@ -6,12 +6,14 @@ export class WalletConnector{
   static STATE_ACTIVE = 1;
   static STATE_INACTIVE = 0;
   state: number;
+
   constructor(){
     this.state = WalletConnector.STATE_INACTIVE;
   }
 
   activate = async (): Promise<{account: string}> => {
     await delay(100);
+    this.state = WalletConnector.STATE_ACTIVE;
     return {
       account: FAKE_WALLET_ADDRESS
     };
@@ -19,25 +21,14 @@ export class WalletConnector{
 
   getAccount = async () : Promise<null | string> => {
     await delay(100);
-    if(this.state === WalletConnector.STATE_INACTIVE){
-      return null;
+    if(this.state === WalletConnector.STATE_ACTIVE){
+      return FAKE_WALLET_ADDRESS;
     }
-    return FAKE_WALLET_ADDRESS;
+    return null;
   };
 
   reset = () => {
+    this.state = WalletConnector.STATE_INACTIVE;
     return null;
   };
 }
-
-export const connectWallet = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => resolve(FAKE_WALLET_ADDRESS),1500);
-  });
-};
-
-export const disconnectWallet = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => resolve(null),1500);
-  });
-};

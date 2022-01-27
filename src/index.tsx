@@ -2,10 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { WalletConnector } from "./api/wallet";
 import App from "./App";
 import "./index.css";
 import { store } from "./redux/store";
 import reportWebVitals from "./reportWebVitals";
+
+export const walletConnector = new WalletConnector();
 
 const root = document.getElementById("root");
 

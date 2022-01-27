@@ -32,7 +32,11 @@ export default function Header() {
   };
 
   const handleConnect = () => {
-    dispatch(!connected? connect():disconnect());
+    if (!connected){
+      dispatch(connect());
+    }else{
+      dispatch(disconnect());
+    }
   };
 
   return (

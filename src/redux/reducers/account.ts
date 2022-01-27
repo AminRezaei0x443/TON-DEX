@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { connectWallet, disconnectWallet } from "../../api/wallet";
+import { walletConnector } from "../..";
 import { RootState } from "../store";
 import type { AccountState, WalletAddress } from "../types/account";
 import { notification } from "./notifications";
@@ -11,28 +11,36 @@ const initialState :AccountState ={
 const NOTIFICATION_TIMEOUT = 2000;
 
 export const connect = createAsyncThunk("account/connect", async (_, thunkAPI) => {
-  const res = await connectWallet();
+  const res = await walletConnector.activate();
   if (res !== null){
-    thunkAPI.dispatch(notification({ message:"Successfully connected to wallet.",
+    thunkAPI.dispatch(notification({
+      message:"Successfully connected to wallet.",
       type:"success",
-      timeout:NOTIFICATION_TIMEOUT }));
+      timeout:NOTIFICATION_TIMEOUT
+    }));
   }else{
-    thunkAPI.dispatch(notification({ message:"Could not connect to wallet.",
+    thunkAPI.dispatch(notification({
+      message:"Could not connect to wallet.",
       type:"failure",
-      timeout:NOTIFICATION_TIMEOUT }));
+      timeout:NOTIFICATION_TIMEOUT
+    }));
   }
-  return res;
+  return res.account;
 });
 export const disconnect = createAsyncThunk("account/disconnect", async (_, thunkAPI) => {
-  const res = await disconnectWallet();
+  const res = walletConnector.reset();
   if (res === null){
-    thunkAPI.dispatch(notification({ message:"Successfully disconnected from wallet.",
+    thunkAPI.dispatch(notification({
+      message:"Successfully disconnected from wallet.",
       type:"success",
-      timeout:NOTIFICATION_TIMEOUT }));
+      timeout:NOTIFICATION_TIMEOUT
+    }));
   }else{
-    thunkAPI.dispatch(notification({ message:"There was a problem disconnecting from wallet.",
+    thunkAPI.dispatch(notification({
+      message:"There was a problem disconnecting from wallet.",
       type:"failure",
-      timeout:NOTIFICATION_TIMEOUT }));
+      timeout:NOTIFICATION_TIMEOUT
+    }));
   }
   return res;
 });
@@ -47,14 +55,10 @@ export const accountSlice = createSlice({
   reducers:{ wallet:handleWallet },
   extraReducers: (builder) => {
     builder.addCase(connect.fulfilled, (state: AccountState, action) => {
-      if (typeof action.payload === "string"){
-        state.walletAddress = action.payload;
-      }
+      state.walletAddress = action.payload;
     });
     builder.addCase(disconnect.fulfilled, (state: AccountState, action) => {
-      if (action.payload === null){
-        state.walletAddress = action.payload;
-      }
+      state.walletAddress = action.payload;
     });
   }
 });

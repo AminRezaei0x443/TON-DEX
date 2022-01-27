@@ -1,6 +1,6 @@
-import { delay } from "./util";
-import { Token, tokenInfo } from "./tokens";
 import { conversionRate } from "./swap";
+import { Token, tokenInfo } from "./tokens";
+import { delay } from "./util";
 
 enum DataInterval{
     H24,
@@ -14,8 +14,8 @@ interface ValueTick{
 }
 
 interface Prices{
-    token1?: Token;
-    token2?: Token;
+    token1: Token|null;
+    token2: Token|null;
     ticks: ValueTick[];
 };
 

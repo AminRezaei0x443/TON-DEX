@@ -3,7 +3,7 @@ import { CSSTransition } from "react-transition-group";
 import SwapChart from "../../components/SwapChart";
 import SwapPanel from "../../components/SwapPanel";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { retrieveTokens, selectSwap, showChart, SHOW_CHART_KEY } from "../../redux/reducers/swap";
+import { retrieveChart, retrieveTokens, selectSwap, showChart, SHOW_CHART_KEY } from "../../redux/reducers/swap";
 import styles from "./index.module.scss";
 
 export default function SwapPage() {
@@ -15,12 +15,17 @@ export default function SwapPage() {
   },[dispatch]);
 
   useEffect(()=>{
+    dispatch(retrieveChart({
+      address1:swapState.from?.address??"",
+      address2:swapState.to?.address??"",
+      interval:swapState.timespan
+    }));
     dispatch(showChart(
       swapState.from !== null &&
       swapState.to !== null &&
       window.localStorage.getItem(SHOW_CHART_KEY) === "true"
     ));
-  }, [swapState.from, swapState.to, dispatch]);
+  }, [swapState.from, swapState.to, dispatch, swapState.timespan]);
 
   return (
     <div className={styles.container}>

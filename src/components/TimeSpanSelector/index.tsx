@@ -5,7 +5,6 @@ import styles from "./index.module.scss";
 
 const ITEMS:TabItem[] = [
   { label:"24H" },
-  { label:"1D" },
   { label:"1W" },
   { label:"1M" },
 ];

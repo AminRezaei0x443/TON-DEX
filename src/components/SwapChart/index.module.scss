@@ -28,6 +28,13 @@ $increasing-color: #27c5ab;
   flex-flow: row nowrap;
   align-items: baseline;
 
+  img {
+    max-width: 2.5rem;
+    min-width: 2.5rem;
+    max-height: 2.5rem;
+    min-height: 2.5rem;
+  }
+
   svg {
     @include hover-darken;
   }

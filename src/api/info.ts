@@ -2,7 +2,7 @@ import { conversionRate } from "./swap";
 import { Token, tokenInfo } from "./tokens";
 import { delay } from "./util";
 
-enum DataInterval{
+export enum DataInterval{
     H24,
     W1,
     M1
@@ -13,15 +13,15 @@ interface ValueTick{
     value: number;
 }
 
-interface Prices{
+export interface Prices {
     token1: Token|null;
     token2: Token|null;
     ticks: ValueTick[];
 };
 
 const _intervalMs = {
-  [DataInterval.H24]: 24 * 60 * 60 * 1000,
-  [DataInterval.W1]: 7 * 24 * 60 * 60 * 1000,
+  [DataInterval.H24]: 1* 60 * 60 * 1000,
+  [DataInterval.W1]: 24 * 60 * 60 * 1000,
   [DataInterval.M1]: 30 * 24 * 60 * 60 * 1000,
 };
 
@@ -31,11 +31,12 @@ export const historicalPrices = async (token1: string, token2: string, interval:
   let t2 = await tokenInfo(token1);
   let { fwd, bwd } = await conversionRate(token1, token2);
   let ticks: ValueTick[] = [{
-    time: new Date().getUTCMilliseconds(),
+    time: new Date().getTime(),
     value: fwd,
   }];
   let maxChange = 5;
-  for(let i = 0; i < 24; i++){
+  const len = interval === DataInterval.H24 ? 24 : interval === DataInterval.W1 ? 7 : 30;
+  for(let i = 0; i < len; i++){
     let lastTick = ticks[0];
     let change = (Math.random() * maxChange * 2) - maxChange;
     change /= 100;

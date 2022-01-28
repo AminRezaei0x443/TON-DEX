@@ -1,3 +1,4 @@
+import { DataInterval, Prices } from "../../api/info";
 import { Token } from "../../api/tokens";
 
 export interface SwapState {
@@ -11,4 +12,6 @@ export interface SwapState {
     tokens: Token[];
     displayList: Token[];
     selectionModal: "from"|"to"|null;
+    chartData: Prices|null;
+    timespan: DataInterval;
 }

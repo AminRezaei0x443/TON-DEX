@@ -1,3 +1,4 @@
+import cn from "classnames";
 import React, { useState } from "react";
 import { DataInterval } from "../../api/info";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -39,10 +40,15 @@ function Info() {
 
   return <div className={styles.info}>
     <span className={styles.ratio}>
-      <h4>TODO</h4>
+      <h4>{swapState.conversionRate}</h4>
       <span>{swapState.from?.symbol}/{swapState.to?.symbol}</span>
     </span>
-    <span className={styles.diff}>TODO +0.008 (+10%)</span>
+    <span className={cn({
+      [styles.diff]:true,
+      [styles.decreasing]: !swapState.chartDiff.increasing,
+    })}>
+      {swapState.chartDiff.value} ({swapState.chartDiff.percent})
+    </span>
     <div className={styles.timeSpanSelector}>
       <TimeSpanSelector selected={timespan} onChange={handleTimespanChange}/>
     </div>

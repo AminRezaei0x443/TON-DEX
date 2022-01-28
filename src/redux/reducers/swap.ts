@@ -1,11 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DataInterval, historicalPrices } from "../../api/info";
-import { listTokens, Token, TONCOIN } from "../../api/tokens";
+import { conversionRate as getConversionRate } from "../../api/swap";
+import { listTokens, Token, TONCOIN, USDT } from "../../api/tokens";
+import { BN, cleanUpDecimal } from "../../utils/numberUtils";
 import { RootState } from "../store";
 import { SwapState } from "../types/swap";
 import { notification } from "./notifications";
 
 export const SHOW_CHART_KEY = "show_chart";
+
+
 const initialState :SwapState ={
   showChart:window.localStorage.getItem(SHOW_CHART_KEY) !== "false",
   from: TONCOIN,
@@ -18,7 +22,10 @@ const initialState :SwapState ={
   displayList: [],
   selectionModal:"from",
   chartData: null,
-  timespan: DataInterval.H24
+  timespan: DataInterval.H24,
+  conversionRate: 0,
+  usdtRate: 0,
+  chartDiff: { increasing: false, value:"0", percent:"0" }
 };
 
 
@@ -60,6 +67,13 @@ export const retrieveChart = createAsyncThunk(
       thunkAPI.dispatch(notification({ message:"There was an error whilte fetching info!", type:"failure" }));
     }
     return res;
+  });
+export const conversionRate = createAsyncThunk(
+  "swap/conversionRate",
+  async ({ from,to }:{from:Token, to:Token }) => {
+    const res = await getConversionRate(from.address, to.address);
+    const usdtRes = await getConversionRate(from.address, USDT.address);
+    return { rate: res.fwd, usdt: usdtRes.fwd };
   });
 
 const handleFilterTokens = (state:SwapState, { payload }:PayloadAction<string>) => {
@@ -103,6 +117,21 @@ export const swapSlice = createSlice({
     });
     builder.addCase(retrieveChart.fulfilled, (state: SwapState, { payload }) => {
       state.chartData = payload;
+
+      const len = state.chartData?.ticks.length ?? 0;
+
+      const diff = new BN((payload?.ticks[len-1].value ?? 0) - (payload?.ticks[len-2].value ?? 0));
+      const percent = diff.div((payload?.ticks[len-2].value??1)).times(100);
+
+      state.chartDiff = {
+        increasing: diff.isPositive(),
+        value: `${diff.isPositive()?"+":""}${diff.toFixed(3)}`,
+        percent: `${diff.isPositive()?"+":"-"}%${percent.abs().toFixed(2)}`,
+      };
+    });
+    builder.addCase(conversionRate.fulfilled, (state: SwapState, { payload }) => {
+      state.conversionRate = cleanUpDecimal(payload.rate);
+      state.usdtRate = cleanUpDecimal(payload.usdt);
     });
   }
 });

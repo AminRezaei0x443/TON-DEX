@@ -74,11 +74,15 @@
 }
 
 .info {
-  display: inline-flex;
-  flex-flow: row wrap;
-  align-items: flex-start;
+  display: flex;
   font-size: 1rem;
   font-weight: 400;
-  gap: 10px;
   margin: 1rem 0;
+  align-content: center;
+  gap: 10px;
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  span {
+    flex: 1;
+  }
 }

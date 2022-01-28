@@ -39,16 +39,18 @@ export const TONCOIN = {
   "logoURI": "https://ton.org/download/toncoin_symbol.png"
 };
 
+export const USDT = {
+  "name": "Tether",
+  "symbol": "USDT",
+  "address": "0x3as2adsadfb3400fAbB9AcF31297cBdD1d443DS7",
+  "chainId": 39,
+  "decimals": 18,
+  "logoURI": "https://assets.trustwalletapp.com/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+};
+
 const _tokens: Token[] = [
   TONCOIN,
-  {
-    "name": "Tether",
-    "symbol": "USDT",
-    "address": "0x3as2adsadfb3400fAbB9AcF31297cBdD1d443DS7",
-    "chainId": 39,
-    "decimals": 18,
-    "logoURI": "https://assets.trustwalletapp.com/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
-  },
+  USDT,
   {
     "name": "Cardano Token",
     "symbol": "ADA",

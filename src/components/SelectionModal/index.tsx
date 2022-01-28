@@ -25,8 +25,11 @@ export default function SelectionModal() {
     debounceSearch(text);
   };
   const handleDismiss = () => dispatch(showModal(null));
+  const preventClickThroughs = (e: React.MouseEvent<HTMLElement>) => e.stopPropagation();
 
-  return <div className={styles.container}>
+  return <div
+    className={styles.container}
+    onClick={preventClickThroughs}>
     <div className={styles.title}>
       <h2>Select Token</h2>
       <Close onClick={handleDismiss}/>

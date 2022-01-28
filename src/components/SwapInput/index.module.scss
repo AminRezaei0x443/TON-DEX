@@ -60,6 +60,8 @@
     gap: 10px;
 
     img {
+      @include round-image;
+
       display: inline;
       min-width: 2rem;
       min-height: 2rem;

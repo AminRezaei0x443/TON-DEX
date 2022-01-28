@@ -40,3 +40,7 @@
     display: none;
   }
 }
+
+@mixin round-image {
+  border-radius: 50%;
+}

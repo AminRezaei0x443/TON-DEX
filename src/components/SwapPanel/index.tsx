@@ -55,7 +55,14 @@ export default function SwapPanel() {
         token={swapState.to}
         onSelectToken={handleSelectToToken}/>
       <span className={styles.info}>
-        <Info/> 1 TONCOIN = 0.01231 BNB ($1.423)
+        {swapState.conversionRate !== 0 ?
+          <>
+            <Info/>
+            <span>
+            1 {swapState.from?.symbol} = {swapState.conversionRate} {swapState.to?.symbol} (${swapState.usdtRate})
+            </span>
+          </>
+          :null }
       </span>
       <Button
         buttonType="primaryLarge"

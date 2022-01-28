@@ -6,7 +6,7 @@ import { selectSwap } from "../../redux/reducers/swap";
 import styles from "./index.module.scss";
 
 export default function Chart() {
-  const { chartData, timespan } = useAppSelector(selectSwap);
+  const { chartData, timespan, chartDiff:{ increasing } } = useAppSelector(selectSwap);
 
 
   const ticks = useMemo(
@@ -43,6 +43,10 @@ export default function Chart() {
             <stop offset="0%" stopColor="#27C5AB" stopOpacity={0.27}/>
             <stop offset="100%" stopColor="#27C5AB" stopOpacity={0}/>
           </linearGradient>
+          <linearGradient id="colorDecr" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#CC009C" stopOpacity={0.27}/>
+            <stop offset="100%" stopColor="#CC009C" stopOpacity={0}/>
+          </linearGradient>
         </defs>
         <Tooltip content={<CustomTooltip />}/>
         <XAxis
@@ -61,7 +65,7 @@ export default function Chart() {
           stroke="#303757"
           strokeWidth="3px"
           fillOpacity={1}
-          fill="url(#colorIncr)"
+          fill={`url(#${increasing?"colorIncr":"colorDecr"})`}
         />
       </AreaChart>
     </ResponsiveContainer>

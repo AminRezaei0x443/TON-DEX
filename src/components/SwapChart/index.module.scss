@@ -3,6 +3,7 @@
 @import "../../assets/styles/constants";
 
 $increasing-color: #27c5ab;
+$decreasing-color: #cc009c;
 
 .container {
   border: solid 2px $border-color;
@@ -29,6 +30,8 @@ $increasing-color: #27c5ab;
   align-items: baseline;
 
   img {
+    @include round-image;
+
     max-width: 2.5rem;
     min-width: 2.5rem;
     max-height: 2.5rem;
@@ -76,6 +79,10 @@ $increasing-color: #27c5ab;
     font-weight: 700;
     font-size: 1rem;
     padding: 0 1rem;
+  }
+
+  .decreasing {
+    color: $decreasing-color;
   }
 
   .timeSpanSelector {

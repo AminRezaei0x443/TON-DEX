@@ -58,6 +58,8 @@
     @include hover-background;
 
     img {
+      @include round-image;
+
       max-height: 2rem;
       max-width: 2rem;
       min-height: 2rem;

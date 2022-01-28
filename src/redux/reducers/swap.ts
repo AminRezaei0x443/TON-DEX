@@ -3,7 +3,7 @@ import { listTokens, Token, TONCOIN } from "../../api/tokens";
 import { RootState } from "../store";
 import { SwapState } from "../types/swap";
 
-const SHOW_CHART_KEY = "show_chart";
+export const SHOW_CHART_KEY = "show_chart";
 const initialState :SwapState ={
   showChart:window.localStorage.getItem(SHOW_CHART_KEY) !== "false",
   from: TONCOIN,
@@ -33,7 +33,6 @@ const handleChangeInput = (state:SwapState, { payload }:PayloadAction<{key: "to"
 
 const handleShowChart = (state:SwapState, { payload }:PayloadAction<boolean>) => {
   state.showChart = payload;
-  window.localStorage.setItem(SHOW_CHART_KEY,`${payload}`);
 };
 
 const handleToggleChart = (state:SwapState) => {

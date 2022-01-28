@@ -20,12 +20,7 @@ export const listTokens = async (page: number): Promise<Token[]> => {
 
 export const tokenInfo = async (address: string): Promise<Token|null> => {
   await delay(100);
-  for (const token of _tokens) {
-    if(token.address === address){
-      return token;
-    }
-  }
-  return null;
+  return _tokens.find(token=>token.address === address)??null;
 };
 
 export const tokenBalance = async (tokenAddress: string, address: string): Promise<number> => {
@@ -35,7 +30,25 @@ export const tokenBalance = async (tokenAddress: string, address: string): Promi
   return 1e20 / Math.pow(10, token.decimals);
 };
 
+export const TONCOIN = {
+  "name": "TON DEX",
+  "symbol": "TONCOIN",
+  "address": "0x3EE2Edsadfb3400fAbB9AcF31297cBdD1d443DS7",
+  "chainId": 59,
+  "decimals": 18,
+  "logoURI": "https://ton.org/download/toncoin_symbol.png"
+};
+
 const _tokens: Token[] = [
+  TONCOIN,
+  {
+    "name": "Tether",
+    "symbol": "USDT",
+    "address": "0x3as2adsadfb3400fAbB9AcF31297cBdD1d443DS7",
+    "chainId": 39,
+    "decimals": 18,
+    "logoURI": "https://assets.trustwalletapp.com/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+  },
   {
     "name": "Cardano Token",
     "symbol": "ADA",

@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { walletConnector } from "../..";
 import { RootState } from "../store";
-import type { AccountState, WalletAddress } from "../types/account";
+import type { AccountState } from "../types/account";
 import { notification } from "./notifications";
 
 const initialState :AccountState ={
@@ -45,14 +45,12 @@ export const disconnect = createAsyncThunk("account/disconnect", async (_, thunk
   return res;
 });
 
-const handleWallet = (state:AccountState, { payload }:PayloadAction<WalletAddress>) => {
-  state.walletAddress = payload;
-};
 
 export const accountSlice = createSlice({
   initialState,
   name:"account",
-  reducers:{ wallet:handleWallet },
+  reducers:{
+  },
   extraReducers: (builder) => {
     builder.addCase(connect.fulfilled, (state: AccountState, action) => {
       state.walletAddress = action.payload;
@@ -64,7 +62,7 @@ export const accountSlice = createSlice({
 });
 
 
-export const { wallet }= accountSlice.actions;
+// export const {  }= accountSlice.actions;
 
 export const selectAccount = (state: RootState): AccountState => state.account;
 

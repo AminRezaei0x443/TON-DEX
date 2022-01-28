@@ -1,17 +1,22 @@
+import { useEffect } from "react";
 import { CSSTransition } from "react-transition-group";
 import SwapChart from "../../components/SwapChart";
 import SwapPanel from "../../components/SwapPanel";
-import { useAppSelector } from "../../redux/hooks";
-import { selectSwap } from "../../redux/reducers/swap";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { retrieveTokens, selectSwap } from "../../redux/reducers/swap";
 import styles from "./index.module.scss";
 
 export default function SwapPage() {
   const swapState = useAppSelector(selectSwap);
+  const dispatch = useAppDispatch();
+
+  useEffect(()=>{
+    dispatch(retrieveTokens());
+  },[dispatch]);
 
   return (
     <div className={styles.container}>
       <SwapPanel/>
-
       <CSSTransition
         in={swapState.showChart}
         timeout={500}

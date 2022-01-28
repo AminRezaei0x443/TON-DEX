@@ -22,20 +22,15 @@
   flex: 1;
   gap: 4px;
 
-  label {
-    font-weight: 500;
-    font-size: 1.125rem;
-  }
-
   input {
     padding: 0;
-    font-size: 1.125rem;
-    font-weight: 900;
+    font-size: 1rem;
+    font-weight: 500;
     border: none;
     outline: none;
     background-color: transparent !important;
     appearance: none;
-    color: $primary-color;
+    color: $primary-dark-color;
     width: 100%;
 
     &::-webkit-inner-spin-button,

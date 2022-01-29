@@ -136,6 +136,9 @@ export const swapSlice = createSlice({
     builder.addCase(conversionRate.fulfilled, (state: SwapState, { payload }) => {
       state.conversionRate = cleanUpDecimal(payload.rate);
       state.usdtRate = cleanUpDecimal(payload.usdt);
+
+      state.inputs.to = state.conversionRate * state.inputs.from;
+
     });
   }
 });

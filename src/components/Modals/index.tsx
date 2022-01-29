@@ -2,6 +2,7 @@ import React from "react";
 import { CSSTransition } from "react-transition-group";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectModals, showModal } from "../../redux/reducers/modals";
+import ConfirmSwapModal from "../ConfirmSwapModal";
 import SelectionModal from "../SelectionModal";
 import styles from "./index.module.scss";
 
@@ -24,9 +25,13 @@ export default function Modals() {
     unmountOnExit>
     <div className={styles.container}
       onClick={handleDismiss}>
-      {modalsState.shown === "swap-selection" ?
-        <SelectionModal />
-        : null }
+      {
+        modalsState.shown === "swap-selection" ?
+          <SelectionModal />
+          : modalsState.shown === "swap-confirmation" ?
+            <ConfirmSwapModal/>
+            : null
+      }
     </div>
   </CSSTransition>;
 }

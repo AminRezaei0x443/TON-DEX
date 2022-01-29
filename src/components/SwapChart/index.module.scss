@@ -2,9 +2,6 @@
 @import "../../assets/styles/mixins";
 @import "../../assets/styles/constants";
 
-$increasing-color: #27c5ab;
-$decreasing-color: #cc009c;
-
 .container {
   border: solid 2px $border-color;
   border-radius: $border-radius;

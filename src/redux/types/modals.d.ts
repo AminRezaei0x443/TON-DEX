@@ -1,4 +1,4 @@
-export type Modal = null|"swap-selection";
+export type Modal = null|"swap-selection"|"swap-confirmation";
 
 export interface ModalsState {
     shown: Modal;

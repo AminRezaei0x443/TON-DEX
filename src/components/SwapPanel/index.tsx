@@ -2,7 +2,6 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { connect, selectAccount } from "../../redux/reducers/account";
 import { showModal } from "../../redux/reducers/modals";
-import { notification } from "../../redux/reducers/notifications";
 import { changeInput, selectioModal, selectSwap, switchInputs } from "../../redux/reducers/swap";
 import Button from "../Button";
 import Info from "../icons/Info";
@@ -23,7 +22,7 @@ export default function SwapPanel() {
     if (!connected) {
       dispatch(connect());
     }else{
-      dispatch(notification({ message:"YO" }));
+      dispatch(showModal("swap-confirmation"));
     }
   };
 

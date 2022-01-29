@@ -13,7 +13,8 @@ export const SHOW_CHART_KEY = "show_chart";
 const initialState :SwapState ={
   showChart:window.localStorage.getItem(SHOW_CHART_KEY) !== "false",
   from: TONCOIN,
-  to: null,
+  // to: null,
+  to: USDT,
   inputs:{
     from:0,
     to:0
@@ -40,6 +41,10 @@ const handleSwitchInputs = (state:SwapState) => {
 
 const handleChangeInput = (state:SwapState, { payload }:PayloadAction<{key: "to"|"from", value: number}>) => {
   state.inputs[payload.key] = payload.value;
+  const otherKey = payload.key === "from" ? "to" : "from";
+  if(state[otherKey] !== null){
+    state.inputs[otherKey] = state.conversionRate * payload.value;
+  }
 };
 
 const handleTimespan = (state:SwapState, { payload }:PayloadAction<DataInterval>) => {

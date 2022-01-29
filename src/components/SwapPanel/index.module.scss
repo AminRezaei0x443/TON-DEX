@@ -57,11 +57,11 @@
   align-items: center;
   justify-content: center;
 
-  /* stylelint-disable-next-line no-descending-specificity */
   svg {
     height: 14px;
     width: 14px;
     transition: transform 0.2s;
+    stroke: $primary-dark-color;
   }
 
   @include hover-lighten;
@@ -81,7 +81,6 @@
   align-content: center;
   gap: 10px;
 
-  /* stylelint-disable-next-line no-descending-specificity */
   span {
     flex: 1;
   }

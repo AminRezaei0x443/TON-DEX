@@ -32,8 +32,7 @@ export default function Header() {
     }else{
       setTab(0);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.pathname]);
 
   const connected = walletState.walletAddress !== null;
 
@@ -71,7 +70,6 @@ export default function Header() {
       navigate("/");
       break;
     }
-    setTab(newTab);
   };
 
 

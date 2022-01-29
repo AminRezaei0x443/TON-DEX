@@ -3,16 +3,18 @@ import { CSSTransition } from "react-transition-group";
 import SwapChart from "../../components/SwapChart";
 import SwapPanel from "../../components/SwapPanel";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { selectAccount } from "../../redux/reducers/account";
 import { conversionRate, retrieveChart, retrieveTokens, selectSwap, showChart, SHOW_CHART_KEY } from "../../redux/reducers/swap";
 import styles from "./index.module.scss";
 
 export default function SwapPage() {
   const swapState = useAppSelector(selectSwap);
+  const { walletAddress } = useAppSelector(selectAccount);
   const dispatch = useAppDispatch();
 
   useEffect(()=>{
-    dispatch(retrieveTokens());
-  },[dispatch]);
+    dispatch(retrieveTokens( walletAddress ));
+  },[dispatch, walletAddress]);
 
   useEffect(()=>{
     if (swapState.from!==null && swapState.to!==null){

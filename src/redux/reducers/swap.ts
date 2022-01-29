@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DataInterval, historicalPrices } from "../../api/info";
 import { conversionRate as getConversionRate } from "../../api/swap";
-import { listTokens, Token, TONCOIN, USDT } from "../../api/tokens";
+import { listTokens, Token, tokenBalance, TONCOIN, USDT } from "../../api/tokens";
 import { BN, cleanUpDecimal } from "../../utils/numberUtils";
 import { RootState } from "../store";
-import { SwapState } from "../types/swap";
+import { SwapState, TokenBalanced } from "../types/swap";
 import { notification } from "./notifications";
 
 export const SHOW_CHART_KEY = "show_chart";
@@ -61,10 +61,22 @@ const handleToggleChart = (state:SwapState) => {
   window.localStorage.setItem(SHOW_CHART_KEY,`${newState}`);
 };
 
+
+
 export const retrieveTokens = createAsyncThunk(
-  "swap/retrieveTokens", async ()=>{
-    return await listTokens(-1);
+  "swap/retrieveTokens", async (walletAddress:string|null, thunkAPI)=>{
+    let newList:TokenBalanced[] = await listTokens(0);
+    newList = await Promise.all(newList.map(async (token):Promise<TokenBalanced> => {
+      let balance = 0;
+      if(walletAddress !== null){
+        balance = await tokenBalance(token.address , walletAddress);
+      }
+      balance = cleanUpDecimal(balance);
+      return { ...token, balance };
+    }));
+    return newList;
   });
+
 export const retrieveChart = createAsyncThunk(
   "swap/retrieveChart",
   async ({ address1, address2, interval }:{ address1:string; address2:string; interval:DataInterval }, thunkAPI) => {

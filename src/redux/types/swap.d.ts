@@ -7,6 +7,8 @@ export type DifferenceData = {
     percent:string;
 }
 
+export type TokenBalanced = Token & {balance? :number}
+
 export interface SwapState {
     showChart: boolean;
     from: Token|null;
@@ -15,8 +17,8 @@ export interface SwapState {
         from:number;
         to:number;
     },
-    tokens: Token[];
-    displayList: Token[];
+    tokens: TokenBalanced[];
+    displayList: TokenBalanced[];
     selectionModal: "from"|"to"|null;
     chartData: Prices|null;
     timespan: DataInterval;

@@ -11,10 +11,9 @@ export const SHOW_CHART_KEY = "show_chart";
 
 
 const initialState :SwapState ={
-  showChart:window.localStorage.getItem(SHOW_CHART_KEY) !== "false",
+  showChart: false,
   from: TONCOIN,
-  // to: null,
-  to: USDT,
+  to: null,
   inputs:{
     from:0,
     to:0

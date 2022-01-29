@@ -26,11 +26,13 @@ export default function SwapPage() {
       ));
     }
 
-    dispatch(showChart(
-      swapState.from !== null &&
-      swapState.to !== null &&
-      window.localStorage.getItem(SHOW_CHART_KEY) === "true"
-    ));
+    const cookieValue = window.localStorage.getItem(SHOW_CHART_KEY) === "true";
+    if (cookieValue){
+      dispatch(showChart(
+        swapState.from !== null &&
+        swapState.to !== null
+      ));
+    }
   }, [swapState.from, swapState.to, dispatch, swapState.timespan]);
 
   return (

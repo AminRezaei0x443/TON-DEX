@@ -36,6 +36,8 @@ const handleSwitchInputs = (state:SwapState) => {
   state.from = state.to;
   state.inputs.to = tempInput;
   state.to = temp;
+
+  state.conversionRate = cleanUpDecimal(1/state.conversionRate);
 };
 
 const handleChangeInput = (state:SwapState, { payload }:PayloadAction<{key: "to"|"from", value: number}>) => {
@@ -138,7 +140,6 @@ export const swapSlice = createSlice({
       state.usdtRate = cleanUpDecimal(payload.usdt);
 
       state.inputs.to = state.conversionRate * state.inputs.from;
-
     });
   }
 });

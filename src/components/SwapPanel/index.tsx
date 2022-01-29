@@ -54,7 +54,7 @@ export default function SwapPanel() {
         token={swapState.to}
         onSelectToken={handleSelectToToken}/>
       <span className={styles.info}>
-        {swapState.conversionRate !== 0 ?
+        {swapState.conversionRate !== 0 && swapState.from !== null && swapState.to !== null?
           <>
             <Info/>
             <span>

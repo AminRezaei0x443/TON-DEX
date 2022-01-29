@@ -4,6 +4,7 @@ import styles from "./index.module.scss";
 
 enum ButtonType {
   Primary="primary", Secondary="secondary",
+  PrimarySmall="primarySmall", SecondarySmall="secondarySmall",
   PrimaryLarge="primaryLarge", SecondaryLarge="secondaryLarge"
 }
 
@@ -18,7 +19,7 @@ HTMLButtonElement
   buttonType?:ButtonType|string
 };
 
-export default function Button({ title,buttonType,loading, ...props }:Props) {
+export default function Button({ title,buttonType,loading,className, ...props }:Props) {
   return <button
     className={cn({
       [styles.button]:true,
@@ -26,7 +27,10 @@ export default function Button({ title,buttonType,loading, ...props }:Props) {
       [styles.primaryLarge]: buttonType === ButtonType.PrimaryLarge,
       [styles.secondary]: buttonType === ButtonType.Secondary,
       [styles.secondaryLarge]: buttonType === ButtonType.SecondaryLarge,
-      [styles.loading]: loading
+      [styles.primarySmall]: buttonType === ButtonType.PrimarySmall,
+      [styles.secondarySmall]: buttonType === ButtonType.SecondarySmall,
+      [styles.loading]: loading,
+      [className??""]: !!className,
     })}
     type="button" {...props}>{ title }</button>;
 }

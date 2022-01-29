@@ -2,6 +2,7 @@
 @import "../../assets/styles/mixins";
 
 $radius: 18px;
+$radius-small: 8px;
 $radius-large: 16px;
 
 .button {
@@ -54,6 +55,12 @@ $radius-large: 16px;
   padding: 1rem 2rem;
 }
 
+%small {
+  border-radius: $radius-small;
+  padding: 0.25rem 1rem;
+  font-size: 0.75rem;
+}
+
 .primary {
   @extend %primary;
   @extend %normal;
@@ -72,4 +79,14 @@ $radius-large: 16px;
 .secondaryLarge {
   @extend %secondary;
   @extend %large;
+}
+
+.primarySmall {
+  @extend %primary;
+  @extend %small;
+}
+
+.secondarySmall {
+  @extend %secondary;
+  @extend %small;
 }

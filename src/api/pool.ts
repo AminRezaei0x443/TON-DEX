@@ -22,7 +22,7 @@ export const listPools = async (page: number, loadInfo: boolean = true): Promise
   return [];
 };
 
-interface PoolPositionInfo{
+export interface PoolPositionInfo{
     pool?: Pool;
     liquidityTokens: number;
     share: number;

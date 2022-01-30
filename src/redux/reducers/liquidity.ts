@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { conversionRate as getConversionRate } from "../../api/swap";
-import { Token } from "../../api/tokens";
+import { Token, tokenBalance } from "../../api/tokens";
 import { cleanUpDecimal } from "../../utils/numberUtils";
 import { RootState } from "../store";
 import type { LiquidityState } from "../types/liquidity";
@@ -44,10 +44,23 @@ const handleSelectionModal = (state:LiquidityState, { payload }:PayloadAction<"t
 };
 
 export const conversionRate = createAsyncThunk(
-  "swap/conversionRate",
+  "liquidity/conversionRate",
   async ({ from,to }:{from:Token, to:Token }) => {
     const res = await getConversionRate(from.address, to.address);
     return { rate: res.fwd };
+  });
+
+export const syncTokenBalances = createAsyncThunk(
+  "swap/syncTokenBalances",
+  async ({ token1, token2, walletAddress }:{token1?:string, token2?:string ,walletAddress:string}) => {
+    let fromBalance = 0 , toBalance = 0;
+    if(token1 !== undefined){
+      fromBalance = await tokenBalance(token1, walletAddress);
+    }
+    if(token2 !== undefined){
+      toBalance = await tokenBalance(token2, walletAddress);
+    }
+    return { fromBalance, toBalance };
   });
 
 
@@ -66,6 +79,15 @@ export const liquiditySlice = createSlice({
       state.conversionRate = cleanUpDecimal(payload.rate);
 
       state.inputs.to = state.conversionRate * state.inputs.from;
+    });
+
+    builder.addCase(syncTokenBalances.fulfilled, (state: LiquidityState, { payload }) => {
+      if(state.from !== null){
+        state.from.balance = payload.fromBalance;
+      }
+      if(state.to !== null){
+        state.to.balance = payload.toBalance;
+      }
     });
   }
 });

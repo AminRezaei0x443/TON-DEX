@@ -11,7 +11,7 @@ const initialState :TokensState ={
 
 
 export const retrieveTokens = createAsyncThunk(
-  "swap/retrieveTokens", async (walletAddress:string|null, thunkAPI)=>{
+  "tokens/retrieveTokens", async (walletAddress:string|null, thunkAPI)=>{
     let newList:TokenBalanced[] = await listTokens(0);
     newList = await Promise.all(newList.map(async (token):Promise<TokenBalanced> => {
       let balance = 0;

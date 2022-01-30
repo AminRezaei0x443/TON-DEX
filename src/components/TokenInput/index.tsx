@@ -55,7 +55,7 @@ export default function TokenInput({ label, onChange, value, token,onSelectToken
               MAX
             </small>
             :""}
-            Balance: <b>TODO</b>
+            Balance: <b>{token?.balance??0}</b>
         </span>
       </div>
     </div>

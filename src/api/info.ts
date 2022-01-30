@@ -14,8 +14,8 @@ interface ValueTick{
 }
 
 export interface Prices {
-    token1: Token|null;
-    token2: Token|null;
+    token1?: Token;
+    token2?: Token;
     ticks: ValueTick[];
 };
 

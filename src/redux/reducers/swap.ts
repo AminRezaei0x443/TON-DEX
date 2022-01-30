@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DataInterval, historicalPrices } from "../../api/info";
 import { conversionRate as getConversionRate } from "../../api/swap";
-import { Token, TONCOIN, USDT } from "../../api/tokens";
+import { Token, tokenBalance, TONCOIN, USDT } from "../../api/tokens";
 import { BN, cleanUpDecimal } from "../../utils/numberUtils";
 import { RootState } from "../store";
 import { SwapState } from "../types/swap";
@@ -77,6 +77,19 @@ export const conversionRate = createAsyncThunk(
     return { rate: res.fwd, usdt: usdtRes.fwd };
   });
 
+export const syncTokenBalances = createAsyncThunk(
+  "swap/syncTokenBalances",
+  async ({ token1, token2, walletAddress }:{token1?:string, token2?:string ,walletAddress:string}) => {
+    let fromBalance = 0 , toBalance = 0;
+    if(token1 !== undefined){
+      fromBalance = await tokenBalance(token1, walletAddress);
+    }
+    if(token2 !== undefined){
+      toBalance = await tokenBalance(token2, walletAddress);
+    }
+    return { fromBalance, toBalance };
+  });
+
 const handleChangeToken = (state:SwapState, { payload }:PayloadAction<{key: "to"|"from", value: Token}>) => {
   state[payload.key] = payload.value;
 };
@@ -118,6 +131,15 @@ export const swapSlice = createSlice({
       state.usdtRate = cleanUpDecimal(payload.usdt);
 
       state.inputs.to = state.conversionRate * state.inputs.from;
+    });
+
+    builder.addCase(syncTokenBalances.fulfilled, (state: SwapState, { payload }) => {
+      if(state.from !== null){
+        state.from.balance = payload.fromBalance;
+      }
+      if(state.to !== null){
+        state.to.balance = payload.toBalance;
+      }
     });
   }
 });

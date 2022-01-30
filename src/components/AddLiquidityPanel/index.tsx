@@ -1,7 +1,8 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { changeInput, selectionModal, selectLiquidity } from "../../redux/reducers/liquidity";
+import { changeInput, selectionModal, selectLiquidity, syncTokenBalances } from "../../redux/reducers/liquidity";
 import { showModal } from "../../redux/reducers/modals";
+import { useInputBalanceEffect } from "../../utils/hooks";
 import TokenInput from "../TokenInput";
 import Actions from "./Actions";
 import Header from "./Header";
@@ -23,6 +24,8 @@ export default function AddLiquidityPanel() {
   };
   const handleSelectFromToken = () => handleSelectToken("from");
   const handleSelectToToken = () => handleSelectToken("to");
+
+  useInputBalanceEffect(liquidityState.from, liquidityState.to, syncTokenBalances);
 
   return (
     <div className={styles.panel}>

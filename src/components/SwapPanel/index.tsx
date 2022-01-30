@@ -2,7 +2,8 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { connect, selectAccount } from "../../redux/reducers/account";
 import { showModal } from "../../redux/reducers/modals";
-import { changeInput, selectionModal, selectSwap, switchInputs } from "../../redux/reducers/swap";
+import { changeInput, selectionModal, selectSwap, switchInputs, syncTokenBalances } from "../../redux/reducers/swap";
+import { useInputBalanceEffect } from "../../utils/hooks";
 import Button from "../Button";
 import Info from "../icons/Info";
 import TokenInput from "../TokenInput";
@@ -36,6 +37,9 @@ export default function SwapPanel() {
   };
   const handleSelectFromToken = () => handleSelectToken("from");
   const handleSelectToToken = () => handleSelectToken("to");
+
+  useInputBalanceEffect(swapState.from, swapState.to, syncTokenBalances);
+
 
   return (
     <div className={styles.panel}>

@@ -18,9 +18,9 @@ export const listTokens = async (page: number): Promise<Token[]> => {
   return _tokens.slice(offset).slice(0, count);
 };
 
-export const tokenInfo = async (address: string): Promise<Token|null> => {
+export const tokenInfo = async (address: string): Promise<Token|undefined> => {
   await delay(100);
-  return _tokens.find(token=>token.address === address)??null;
+  return _tokens.find(token=>token.address === address)??undefined;
 };
 
 export const tokenBalance = async (tokenAddress: string, address: string): Promise<number> => {

@@ -1,5 +1,5 @@
 import { DataInterval, Prices } from "../../api/info";
-import { Token } from "../../api/tokens";
+import { TokenBalanced } from "./tokens";
 
 export type DifferenceData = {
     increasing:boolean;
@@ -10,16 +10,16 @@ export type DifferenceData = {
 
 export interface SwapState {
     showChart: boolean;
-    from: Token|null;
-    to: Token|null;
+    from: TokenBalanced|null;
+    to: TokenBalanced|null;
     inputs: {
         from:number;
         to:number;
     },
     selectionModal: "from"|"to"|null;
-    chartData: Prices|null;
-    timespan: DataInterval;
     conversionRate: number;
     usdtRate: number;
+    chartData: Prices|null;
+    timespan: DataInterval;
     chartDiff: DifferenceData;
 }

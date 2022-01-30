@@ -1,0 +1,130 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
+@import "../../assets/styles/constants";
+
+.panel {
+  border: solid 2px $border-color;
+  border-radius: $border-radius;
+  padding: 2rem 3rem;
+  display: flex;
+  background-color: white;
+  flex-flow: column nowrap;
+  max-width: 400px;
+  min-width: 250px;
+}
+
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .action {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: $primary-dark-color;
+
+    @include hover-lighten;
+  }
+}
+
+.switchButton {
+  margin: 1rem 0;
+  align-self: center;
+  border: 2px solid $border-color;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: white;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    height: 14px;
+    width: 14px;
+    transition: transform 0.2s;
+    stroke: $primary-dark-color;
+  }
+
+  &:hover {
+    svg {
+      transform: rotate(-180deg);
+    }
+  }
+}
+
+.info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 1rem 0;
+  justify-content: center;
+  align-content: center;
+  height: 80px;
+  text-align: center;
+  border-radius: 14px;
+  background-color: $primary-light-color;
+  gap: 0.5rem;
+  padding: 0 1rem;
+
+  &Title {
+    margin: 1.5rem 0 0;
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  span {
+    flex: 1;
+    font-size: 1rem;
+    display: inline-flex;
+    flex-flow: column nowrap;
+    font-weight: 900;
+    color: $primary-color;
+  }
+
+  label {
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: $primary-dark-color;
+  }
+}
+
+.actions {
+  display: grid;
+  grid-template-areas:
+    "first second"
+    "confirm confirm";
+  column-gap: 1.5rem;
+  row-gap: 1rem;
+
+  %small {
+    padding: 0.75rem 1rem;
+  }
+
+  .first {
+    @extend %small;
+
+    grid-area: first;
+  }
+
+  .second {
+    @extend %small;
+
+    grid-area: second;
+  }
+
+  .confirm {
+    @extend %small;
+
+    grid-area: confirm;
+  }
+}

@@ -12,12 +12,9 @@ $radius-large: 16px;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
 
   @include hover-darken;
-}
-
-.loading {
-  @include disabled;
 }
 
 @keyframes loading-anim {
@@ -89,4 +86,14 @@ $radius-large: 16px;
 .secondarySmall {
   @extend %secondary;
   @extend %small;
+}
+
+.disabled {
+  background-color: $border-color;
+  color: rgba($primary-dark-color, 0.45);
+  pointer-events: none;
+}
+
+.loading {
+  @include disabled;
 }

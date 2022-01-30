@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { connect, selectAccount } from "../../redux/reducers/account";
-import { notification } from "../../redux/reducers/notifications";
+import { panel } from "../../redux/reducers/liquidity";
 import Button from "../Button";
 import Settings from "../icons/Settings";
 import styles from "./index.module.scss";
@@ -16,7 +16,7 @@ export default function Header() {
     if (!connected) {
       dispatch(connect());
     }else{
-      dispatch(notification({ message: "ayo" }));
+      dispatch(panel("add"));
     }
   };
 

@@ -5,9 +5,14 @@
   gap: 1rem;
 }
 
-.enter {
+.enterMain {
   opacity: 0;
   transform: translateX(-100px);
+}
+
+.enter {
+  opacity: 0;
+  transform: translateX(100px);
 }
 
 .enterActive {
@@ -18,6 +23,12 @@
 
 .exit {
   opacity: 1;
+}
+
+.exitMainActive {
+  opacity: 0;
+  transform: translateX(100px);
+  transition: opacity 0.3s, transform 0.3s;
 }
 
 .exitActive {

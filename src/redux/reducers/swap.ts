@@ -59,8 +59,6 @@ const handleToggleChart = (state:SwapState) => {
   window.localStorage.setItem(SHOW_CHART_KEY,`${newState}`);
 };
 
-
-
 export const retrieveChart = createAsyncThunk(
   "swap/retrieveChart",
   async ({ address1, address2, interval }:{ address1:string; address2:string; interval:DataInterval }, thunkAPI) => {
@@ -70,6 +68,7 @@ export const retrieveChart = createAsyncThunk(
     }
     return res;
   });
+
 export const conversionRate = createAsyncThunk(
   "swap/conversionRate",
   async ({ from,to }:{from:Token, to:Token }) => {
@@ -95,7 +94,7 @@ export const swapSlice = createSlice({
     changeInput:handleChangeInput,
     changeToken:handleChangeToken,
     switchInputs:handleSwitchInputs,
-    selectioModal:handleSelectionModal,
+    selectionModal:handleSelectionModal,
     changeTimespan:handleTimespan
   },
   extraReducers: builder => {
@@ -129,7 +128,7 @@ export const { showChart,
   changeInput,
   switchInputs,
   changeToken,
-  selectioModal,
+  selectionModal,
   changeTimespan } = swapSlice.actions;
 
 export const selectSwap = (state: RootState): SwapState => state.swap;

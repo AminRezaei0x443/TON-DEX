@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import account from "./reducers/account";
+import liquidity from "./reducers/liquidity";
 import modals from "./reducers/modals";
 import notifications from "./reducers/notifications";
 import swap from "./reducers/swap";
@@ -11,7 +12,8 @@ export const store = configureStore({
     notifications,
     swap,
     modals,
-    tokens
+    tokens,
+    liquidity
   },
 });
 

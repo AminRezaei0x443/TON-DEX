@@ -16,10 +16,11 @@ HTMLButtonElement
 & {
   title:string,
   loading?:boolean,
+  disable?:boolean,
   buttonType?:ButtonType|string
 };
 
-export default function Button({ title,buttonType,loading,className, ...props }:Props) {
+export default function Button({ title,buttonType,loading,className,disable, ...props }:Props) {
   return <button
     className={cn({
       [styles.button]:true,
@@ -30,6 +31,7 @@ export default function Button({ title,buttonType,loading,className, ...props }:
       [styles.primarySmall]: buttonType === ButtonType.PrimarySmall,
       [styles.secondarySmall]: buttonType === ButtonType.SecondarySmall,
       [styles.loading]: loading,
+      [styles.disabled]: disable,
       [className??""]: !!className,
     })}
     type="button" {...props}>{ title }</button>;

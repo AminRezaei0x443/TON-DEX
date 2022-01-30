@@ -42,7 +42,7 @@ interface SwapInfo{
     providerFee: number;
 };
 
-interface SwapInput{
+interface TokenInput{
     token1: string;
     token2: string;
     value: number;
@@ -51,7 +51,7 @@ interface SwapInput{
     multihop?: boolean;
 };
 
-export const swapInfo = async (input: SwapInput): Promise<SwapInfo> => {
+export const swapInfo = async (input: TokenInput): Promise<SwapInfo> => {
   await delay(100);
   return {
     estimatedOutput: 0,
@@ -62,7 +62,7 @@ export const swapInfo = async (input: SwapInput): Promise<SwapInfo> => {
   };
 };
 
-export const confirmSwap = async (input: SwapInput): Promise<void> => {
+export const confirmSwap = async (input: TokenInput): Promise<void> => {
   await delay(100);
 };
 

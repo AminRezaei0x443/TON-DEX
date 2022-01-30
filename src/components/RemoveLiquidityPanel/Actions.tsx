@@ -12,6 +12,6 @@ export default function Actions(){
       buttonType="primaryLarge"
       title="Remove"
       className={styles.button}
-      disable/>
+      disabled/>
   </div>;
 }

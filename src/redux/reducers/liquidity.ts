@@ -1,32 +1,38 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { approveTokenAccess } from "../../api/pool";
 import { conversionRate as getConversionRate } from "../../api/swap";
 import { Token, tokenBalance } from "../../api/tokens";
 import { cleanUpDecimal } from "../../utils/numberUtils";
 import { RootState } from "../store";
 import type { LiquidityState } from "../types/liquidity";
+import { notification } from "./notifications";
 
 
 
 const initialState :LiquidityState ={
   panel:"main",
   conversionRate: 0,
-  from:null,
-  to:null,
+  token1:null,
+  token2:null,
   inputs:{
-    from:0,
-    to:0,
+    token1:0,
+    token2:0,
   },
   selectionModal:null,
   removePercentage:"0.0%",
+  add: {
+    token1: false,
+    token2: false
+  }
 };
 
 
-const handleChangeInput = (state:LiquidityState, { payload }:PayloadAction<{key: "to"|"from", value: number}>) => {
+const handleChangeInput = (state:LiquidityState, { payload }:PayloadAction<{key: "token1"|"token2", value: number}>) => {
   state.inputs[payload.key] = payload.value;
 };
 
 
-const handleChangeToken = (state:LiquidityState, { payload }:PayloadAction<{key: "to"|"from", value: Token}>) => {
+const handleChangeToken = (state:LiquidityState, { payload }:PayloadAction<{key: "token1"|"token2", value: Token}>) => {
   state[payload.key] = payload.value;
 };
 
@@ -39,7 +45,7 @@ const handlePanel = (state:LiquidityState, { payload }:PayloadAction<"main"|"add
   state.panel = payload;
 };
 
-const handleSelectionModal = (state:LiquidityState, { payload }:PayloadAction<"to"|"from">) => {
+const handleSelectionModal = (state:LiquidityState, { payload }:PayloadAction<"token1"|"token2">) => {
   state.selectionModal = payload;
 };
 
@@ -53,14 +59,31 @@ export const conversionRate = createAsyncThunk(
 export const syncTokenBalances = createAsyncThunk(
   "swap/syncTokenBalances",
   async ({ token1, token2, walletAddress }:{token1?:string, token2?:string ,walletAddress:string}) => {
-    let fromBalance = 0 , toBalance = 0;
+    let balance1 = 0 , balance2 = 0;
     if(token1 !== undefined){
-      fromBalance = await tokenBalance(token1, walletAddress);
+      balance1 = await tokenBalance(token1, walletAddress);
     }
     if(token2 !== undefined){
-      toBalance = await tokenBalance(token2, walletAddress);
+      balance2 = await tokenBalance(token2, walletAddress);
     }
-    return { fromBalance, toBalance };
+    return { balance1, balance2 };
+  });
+
+
+export const approveToken = createAsyncThunk<{res:boolean, key:"token1"|"token2"}, "token1"|"token2", {state: RootState}>(
+  "liquidity/approveToken",
+  async (key , thunkAPI) => {
+    const { walletAddress } = thunkAPI.getState().account;
+    const token = thunkAPI.getState().liquidity[key];
+    if(walletAddress === null || token === null){
+      thunkAPI.dispatch(notification({
+        message: "There was a problem approving access.",
+        type: "failure"
+      }));
+      return { res:false, key };
+    }
+    const res = await approveTokenAccess(walletAddress, token.address);
+    return { res, key };
   });
 
 
@@ -78,16 +101,20 @@ export const liquiditySlice = createSlice({
     builder.addCase(conversionRate.fulfilled, (state: LiquidityState, { payload }) => {
       state.conversionRate = cleanUpDecimal(payload.rate);
 
-      state.inputs.to = state.conversionRate * state.inputs.from;
+      state.inputs.token2 = state.conversionRate * state.inputs.token1;
     });
 
     builder.addCase(syncTokenBalances.fulfilled, (state: LiquidityState, { payload }) => {
-      if(state.from !== null){
-        state.from.balance = payload.fromBalance;
+      if(state.token1 !== null){
+        state.token1.balance = payload.balance1;
       }
-      if(state.to !== null){
-        state.to.balance = payload.toBalance;
+      if(state.token2 !== null){
+        state.token2.balance = payload.balance2;
       }
+    });
+
+    builder.addCase(approveToken.fulfilled, (state: LiquidityState, { payload }) => {
+      state.add[payload.key] = payload.res;
     });
   }
 });

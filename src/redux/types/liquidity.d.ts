@@ -2,13 +2,19 @@ import { TokenBalanced } from "./tokens";
 
 export interface LiquidityState {
     panel: "main"|"add"|"remove";
-    from: TokenBalanced|null;
-    to: TokenBalanced|null;
+    token1: TokenBalanced|null;
+    token2: TokenBalanced|null;
     inputs: {
-        from:number;
-        to:number;
+        token1:number;
+        token2:number;
     },
-    selectionModal: "from"|"to"|null;
+    selectionModal: "token1"|"token2"|null;
     conversionRate: number;
     removePercentage: string;
+    add: AddLiquidityState;
+}
+
+interface AddLiquidityState {
+    token1: boolean;
+    token2: boolean;
 }

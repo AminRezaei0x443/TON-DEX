@@ -80,14 +80,14 @@ export const conversionRate = createAsyncThunk(
 export const syncTokenBalances = createAsyncThunk(
   "swap/syncTokenBalances",
   async ({ token1, token2, walletAddress }:{token1?:string, token2?:string ,walletAddress:string}) => {
-    let fromBalance = 0 , toBalance = 0;
+    let balance1 = 0 , balance2 = 0;
     if(token1 !== undefined){
-      fromBalance = await tokenBalance(token1, walletAddress);
+      balance1 = await tokenBalance(token1, walletAddress);
     }
     if(token2 !== undefined){
-      toBalance = await tokenBalance(token2, walletAddress);
+      balance2 = await tokenBalance(token2, walletAddress);
     }
-    return { fromBalance, toBalance };
+    return { balance1, balance2 };
   });
 
 const handleChangeToken = (state:SwapState, { payload }:PayloadAction<{key: "to"|"from", value: Token}>) => {
@@ -135,10 +135,10 @@ export const swapSlice = createSlice({
 
     builder.addCase(syncTokenBalances.fulfilled, (state: SwapState, { payload }) => {
       if(state.from !== null){
-        state.from.balance = payload.fromBalance;
+        state.from.balance = payload.balance1;
       }
       if(state.to !== null){
-        state.to.balance = payload.toBalance;
+        state.to.balance = payload.balance2;
       }
     });
   }

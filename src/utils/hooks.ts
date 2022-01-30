@@ -5,8 +5,8 @@ import { selectAccount } from "../redux/reducers/account";
 import { TokenBalanced } from "../redux/types/tokens";
 
 type FuncType = AsyncThunk<{
-    fromBalance: number;
-    toBalance: number;
+    balance1: number;
+    balance2: number;
 }, {
     token1?: string | undefined;
     token2?: string | undefined;

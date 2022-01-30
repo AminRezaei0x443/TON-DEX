@@ -20,7 +20,7 @@ export default function Modals() {
     dispatch(changeSwapToken({ key:swapModal??"from", value:token }));
   };
   const handleLiquiditySelection = (token: TokenBalanced) => {
-    dispatch(changeLiquidityToken({ key:liquidityModal??"from", value:token }));
+    dispatch(changeLiquidityToken({ key:liquidityModal??"token1", value:token }));
   };
 
   return <CSSTransition

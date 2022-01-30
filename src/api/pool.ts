@@ -159,3 +159,8 @@ export const removeLiquidity = async (token1: string, token2: string, lpValue: n
     }
   }
 };
+
+export const approveTokenAccess = async (address: string, token: string): Promise<boolean> => {
+  await delay(100);
+  return true;
+};

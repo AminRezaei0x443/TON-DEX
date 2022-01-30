@@ -1,8 +1,8 @@
 import React from "react";
 import { Token } from "../../api/tokens";
 import { useAppSelector } from "../../redux/hooks";
-import { selectSwap } from "../../redux/reducers/swap";
-import { TokenBalanced } from "../../redux/types/swap";
+import { selectTokens } from "../../redux/reducers/tokens";
+import { TokenBalanced } from "../../redux/types/tokens";
 import styles from "./index.module.scss";
 
 interface IProps {
@@ -10,9 +10,9 @@ interface IProps {
 }
 
 export default function TokensList({ onSelected }:IProps) {
-  const swapState = useAppSelector(selectSwap);
+  const { displayList } = useAppSelector(selectTokens);
   return <div className={styles.tokensList}>
-    {swapState.displayList.map(token => (
+    {displayList.map(token => (
       <TokenItem
         token={token}
         onClick={()=>onSelected(token)}/>

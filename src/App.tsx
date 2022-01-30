@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Route, Routes
 } from "react-router-dom";
@@ -9,8 +9,20 @@ import Notifications from "./components/Notifications";
 import LiquidityPage from "./pages/Liquidity";
 import NotFound from "./pages/NotFound";
 import SwapPage from "./pages/Swap";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { selectAccount } from "./redux/reducers/account";
+import { retrieveTokens } from "./redux/reducers/tokens";
 
 function App() {
+
+
+  const { walletAddress } = useAppSelector(selectAccount);
+  const dispatch = useAppDispatch();
+
+  useEffect(()=>{
+    dispatch(retrieveTokens( walletAddress ));
+  }, [dispatch, walletAddress]);
+
   return (
     <div className="layout">
       <Header/>

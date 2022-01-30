@@ -8,7 +8,6 @@ export default function Plus({ ...props }: SVGProps<SVGSVGElement>) {
     {...props}>
     <g
       fill="none"
-      stroke="#303757"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}

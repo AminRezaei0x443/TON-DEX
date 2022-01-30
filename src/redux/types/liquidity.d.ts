@@ -1,4 +1,4 @@
-import { PoolPositionInfo } from "../../api/pool";
+import { LPTokenRate, PoolPositionInfo } from "../../api/pool";
 import { TokenBalanced } from "./tokens";
 
 export interface LiquidityState {
@@ -11,8 +11,8 @@ export interface LiquidityState {
     },
     selectionModal: "token1"|"token2"|null;
     conversionRate: number;
-    removePercentage: string;
     add: AddLiquidityState;
+    remove: RemoveLiquidityState;
     liquidity: PoolPositionInfo[] | null;
 }
 
@@ -20,4 +20,11 @@ interface AddLiquidityState {
     token1: boolean;
     token2: boolean;
     position: PoolPositionInfo|null;
+}
+
+interface RemoveLiquidityState {
+    approve: boolean;
+    position: PoolPositionInfo|null;
+    percent: string;
+    lpRate: LPTokenRate|null;
 }

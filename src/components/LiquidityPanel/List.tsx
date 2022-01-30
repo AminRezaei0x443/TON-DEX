@@ -4,7 +4,7 @@ import { CSSTransition } from "react-transition-group";
 import { PoolPositionInfo } from "../../api/pool";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectAccount } from "../../redux/reducers/account";
-import { changeToken, panel, retrieveLiquidities, selectLiquidity } from "../../redux/reducers/liquidity";
+import { changeRemovePosition, changeToken, panel, retrieveLiquidities, selectLiquidity } from "../../redux/reducers/liquidity";
 import Button from "../Button";
 import Chevron from "../icons/Chevron";
 import styles from "./index.module.scss";
@@ -60,6 +60,7 @@ function Item({ positionInfo }:IItemProps) {
   };
 
   const handleRemoveClick = () => {
+    dispatch(changeRemovePosition(positionInfo));
     dispatch(panel("remove"));
   };
 

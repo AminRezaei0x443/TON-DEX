@@ -11,9 +11,9 @@ interface Pool{
 }
 
 interface PoolInfo{
-    liquidity: number;
-    volume24H: number;
-    volume7D: number;
+    liquidity?: number;
+    volume24H?: number;
+    volume7D?: number;
     fwdRate: number;
     bwdRate: number;
 }
@@ -84,7 +84,7 @@ export const calculateShare = async (token1: string, token2: string, value: numb
   };
 };
 
-interface LPTokenRate{
+export interface LPTokenRate{
     token1: number;
     token2: number;
 }
@@ -136,6 +136,11 @@ export const addLiquidity = async (token1: string, token2: string, value: number
         _user_positions = [..._user_positions.slice(0, ps),newPosition, ..._user_positions.slice(ps+1)];
 
       }else{
+        const rate = await conversionRate(token1, token2);
+        p.info = {
+          fwdRate: rate.fwd,
+          bwdRate: rate.bwd,
+        };
         const newPosition: PoolPositionInfo = {
           liquidityTokens: share.liquidityTokens,
           share: share.share,
@@ -151,28 +156,40 @@ export const addLiquidity = async (token1: string, token2: string, value: number
   return true;
 };
 
-export const removeLiquidity = async (token1: string, token2: string, lpValue: number): Promise<void> => {
-  await delay(100);
+export const removeLiquidity = async (token1: string, token2: string, lpValue: number): Promise<boolean> => {
   let id1 = token1 + "_" + token2;
   let pid = _tokens_to_pool_addr.get(id1);
   if(pid){
     let p = _pools.get(pid);
     if(p){
-      let ps = _user_positions.find(p=>p.pool?.address === pid) ?? undefined;
-      if(ps){
-        ps.liquidityTokens -= lpValue;
-        if(ps.liquidityTokens === 0){
-          let index = _user_positions.indexOf(ps);
-          if (index > -1) {
-            _user_positions.splice(index, 1);
-          }
-        }
+      let ps = _user_positions.findIndex(p=>p.pool?.address === pid);
+      if (ps === -1) return false;
+
+      let psElement = _user_positions[ps];
+      console.log({ lt: psElement.liquidityTokens, lpValue });
+
+      psElement = {
+        ...psElement,
+        liquidityTokens: psElement.liquidityTokens - lpValue
+      };
+
+      console.log({ lt: psElement.liquidityTokens, lpValue });
+      if(psElement.liquidityTokens <= 0){
+        _user_positions = [..._user_positions.slice(0, ps), ..._user_positions.slice(ps+1)];
+      }else{
+        _user_positions = [..._user_positions.slice(0, ps), psElement, ..._user_positions.slice(ps+1)];
       }
     }
   }
+  await delay(100);
+  return true;
 };
 
 export const approveTokenAccess = async (address: string, token: string): Promise<boolean> => {
+  await delay(100);
+  return true;
+};
+export const removeApproval = async (address: string, token1: string, token2: string): Promise<boolean> => {
   await delay(100);
   return true;
 };

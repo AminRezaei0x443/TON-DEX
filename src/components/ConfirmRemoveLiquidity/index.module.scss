@@ -31,23 +31,23 @@
 }
 
 .transactionSummary {
-  display: flex;
-  flex-flow: row wrap;
-  font-size: 1.125rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
   font-weight: 700;
-  align-items: flex-end;
-  justify-content: flex-start;
-
-  h1 {
-    font-size: 2rem;
-    margin: 0;
-    display: inline;
-    margin-right: 1rem;
-    color: $primary-dark-color;
-  }
+  font-size: 1rem;
+  gap: 10px;
 
   span {
-    margin-left: 0.75rem;
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+
+  label {
+    justify-self: end;
   }
 
   img {
@@ -57,6 +57,12 @@
     min-height: 1.5rem;
 
     @include round-image;
+  }
+
+  svg {
+    stroke: $border-color;
+    width: 1.5rem;
+    height: 0.875rem;
   }
 }
 
@@ -100,13 +106,5 @@
 
       @include round-image;
     }
-  }
-
-  .priceImpactIncr {
-    color: $increasing-color;
-  }
-
-  .priceImpactDecr {
-    color: $decreasing-color;
   }
 }

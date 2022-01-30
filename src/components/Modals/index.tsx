@@ -6,6 +6,7 @@ import { selectModals, showModal } from "../../redux/reducers/modals";
 import { changeToken as changeSwapToken, selectSwap } from "../../redux/reducers/swap";
 import { TokenBalanced } from "../../redux/types/tokens";
 import ConfirmAddLiquidity from "../ConfirmAddLiquidity";
+import ConfirmRemoveLiquidity from "../ConfirmRemoveLiquidity";
 import ConfirmSwapModal from "../ConfirmSwapModal";
 import SelectionModal from "../SelectionModal";
 import styles from "./index.module.scss";
@@ -47,7 +48,9 @@ export default function Modals() {
               <ConfirmSwapModal/>
               : modalsState.shown === "confirm-supply" ?
                 <ConfirmAddLiquidity/>
-                : null
+                : modalsState.shown === "confirm-remove" ?
+                  <ConfirmRemoveLiquidity/>
+                  : null
       }
     </div>
   </CSSTransition>;

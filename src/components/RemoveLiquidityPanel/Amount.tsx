@@ -6,7 +6,7 @@ import styles from "./index.module.scss";
 
 export default function Amount(){
 
-  const { removePercentage } = useAppSelector(selectLiquidity);
+  const { remove:{ percent } } = useAppSelector(selectLiquidity);
   const dispatch = useAppDispatch();
 
   const handlePercentageChange = (newPercentage: number) => {
@@ -54,7 +54,7 @@ export default function Amount(){
 
   return <div className={styles.amount}>
     <h3>Amount</h3>
-    <input value={removePercentage} onChange={onInputChange}/>
-    <PercentageSelector value={readValue(removePercentage)} onChange={handlePercentageChange}/>
+    <input value={percent} onChange={onInputChange}/>
+    <PercentageSelector value={readValue(percent)} onChange={handlePercentageChange}/>
   </div>;
 }

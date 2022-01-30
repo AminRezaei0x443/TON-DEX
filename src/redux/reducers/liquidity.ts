@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { addLiquidity, approveTokenAccess, calculateShare as getShareInfo, listPositions, PoolPositionInfo } from "../../api/pool";
+import { addLiquidity, approveTokenAccess, calculateShare as getShareInfo, listPositions, LPTokenRate, lpTokenRate, PoolPositionInfo, removeApproval, removeLiquidity } from "../../api/pool";
 import { conversionRate as getConversionRate } from "../../api/swap";
 import { Token, tokenBalance } from "../../api/tokens";
 import { cleanUpDecimal } from "../../utils/numberUtils";
@@ -20,11 +20,16 @@ const initialState :LiquidityState ={
     token2:0,
   },
   selectionModal:null,
-  removePercentage:"0.0%",
   add: {
     token1: false,
     token2: false,
     position: null
+  },
+  remove:{
+    percent:"0.0%",
+    approve: false,
+    position: null,
+    lpRate:null
   },
   liquidity:null
 };
@@ -45,9 +50,17 @@ const handleChangeToken = (state:LiquidityState, { payload }:PayloadAction<{key:
 };
 
 const handleChangeRemovePercentage = (state:LiquidityState, { payload }:PayloadAction<string>) => {
-  state.removePercentage = payload;
+  state.remove.percent = payload;
 };
 
+const handleChangeRemovePosition = (state:LiquidityState, { payload }:PayloadAction<PoolPositionInfo|null>) => {
+  state.remove.position = payload;
+};
+
+
+const handleChangeApproveRemoval = (state:LiquidityState, { payload }:PayloadAction<boolean>) => {
+  state.remove.approve = payload;
+};
 
 const handlePanel = (state:LiquidityState, { payload }:PayloadAction<"main"|"add"|"remove">) => {
   state.panel = payload;
@@ -67,12 +80,24 @@ export const conversionRate = createAsyncThunk<{rate:number},undefined, {state: 
     return { rate: res.fwd };
   });
 
+export const lpRate = createAsyncThunk<LPTokenRate|null,undefined, {state: RootState}>(
+  "liquidity/lpRate",
+  async (_,thunkAPI) => {
+    const { remove } = thunkAPI.getState().liquidity;
+    if(remove.position === null) return null;
+    if(remove.position.pool?.token1 === undefined || remove.position.pool?.token2 === undefined) return null;
+
+    const { token1, token2 } = remove.position.pool;
+
+    const percentageValue = parseFloat(remove.percent.slice(0, -1));
+
+    return await lpTokenRate(token1.address, token2.address, percentageValue);
+  });
+
 export const confirmAddLiquidity = createAsyncThunk<boolean ,undefined, {state: RootState}>(
   "liquidity/confirmAddLiquidity",
   async (_,thunkAPI) => {
     const { token1, token2, inputs } = thunkAPI.getState().liquidity;
-
-    console.log({ token1, token2, inputs });
 
 
     if(token1 === null || token2 === null || inputs.token1 === 0){
@@ -88,6 +113,35 @@ export const confirmAddLiquidity = createAsyncThunk<boolean ,undefined, {state: 
     thunkAPI.dispatch(showModal(null));
     thunkAPI.dispatch(notification({
       message:"Liquidity added?",
+      type:"success"
+    }));
+    thunkAPI.dispatch(retrieveLiquidities());
+
+    return res;
+  });
+export const confirmRemoveLiquidity = createAsyncThunk<boolean ,undefined, {state: RootState}>(
+  "liquidity/confirmRemoveLiquidity",
+  async (_,thunkAPI) => {
+    const { remove } = thunkAPI.getState().liquidity;
+
+    if(!remove.position?.pool?.token1 || !remove.position?.pool?.token2 || remove.lpRate === null ){
+      thunkAPI.dispatch(notification({
+        message:"There was an issue adding liquidity!",
+        type: "failure"
+      }));
+      return false;
+    }
+
+    const { token1, token2 } = remove.position.pool;
+    const percent = parseFloat(remove.percent.slice(0,-1));
+    const lpValue = remove.position.liquidityTokens * percent / 100;
+
+
+    const res = await removeLiquidity(token1.address, token2.address, lpValue);
+
+    thunkAPI.dispatch(showModal(null));
+    thunkAPI.dispatch(notification({
+      message:"Liquidity removed?",
       type:"success"
     }));
     thunkAPI.dispatch(retrieveLiquidities());
@@ -145,6 +199,21 @@ export const approveToken = createAsyncThunk<{res:boolean, key:"token1"|"token2"
     return { res, key };
   });
 
+export const approveRemoval = createAsyncThunk<boolean, undefined,{state: RootState}>(
+  "liquidity/approveRemoval",
+  async (_, thunkAPI) => {
+    const { walletAddress } = thunkAPI.getState().account;
+    const { position } = thunkAPI.getState().liquidity.remove;
+    if(walletAddress === null || !position?.pool?.token1 || !position?.pool?.token2){
+      thunkAPI.dispatch(notification({
+        message: "There was a problem approving removal.",
+        type: "failure"
+      }));
+      return false;
+    }
+    return await removeApproval(walletAddress, position.pool.token1.address, position.pool.token2.address);
+  });
+
 
 export const liquiditySlice = createSlice({
   initialState,
@@ -154,7 +223,9 @@ export const liquiditySlice = createSlice({
     changeToken:handleChangeToken,
     selectionModal:handleSelectionModal,
     panel:handlePanel,
-    changeRemovePercentage:handleChangeRemovePercentage
+    changeRemovePercentage:handleChangeRemovePercentage,
+    changeRemovePosition:handleChangeRemovePosition,
+    changeApproveRemoval:handleChangeApproveRemoval
   },
   extraReducers: (builder) => {
     builder.addCase(conversionRate.fulfilled, (state: LiquidityState, { payload }) => {
@@ -195,11 +266,30 @@ export const liquiditySlice = createSlice({
         state.token2 = null;
       }
     });
+
+    builder.addCase(confirmRemoveLiquidity.fulfilled, (state: LiquidityState, { payload }) => {
+      if(payload){
+        // reset to defaults
+        state.panel = "main";
+        state.remove.approve = false;
+        state.remove.lpRate = null;
+        state.remove.position = null;
+        state.remove.percent = "0%";
+      }
+    });
+
+    builder.addCase(lpRate.fulfilled, (state: LiquidityState, { payload }) => {
+      state.remove.lpRate = payload;
+    });
+
+    builder.addCase(approveRemoval.fulfilled, (state: LiquidityState, { payload }) => {
+      state.remove.approve = payload;
+    });
   }
 });
 
 
-export const { changeInput,changeToken,selectionModal,panel,changeRemovePercentage }= liquiditySlice.actions;
+export const { changeInput,changeToken,selectionModal,panel,changeRemovePercentage,changeRemovePosition,changeApproveRemoval }= liquiditySlice.actions;
 
 export const selectLiquidity = (state: RootState): LiquidityState => state.liquidity;
 

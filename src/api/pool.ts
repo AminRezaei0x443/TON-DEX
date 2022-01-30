@@ -24,7 +24,7 @@ const POOL_PER_PAGE = 10;
 
 export const listPools = async (page: number, loadInfo: boolean = true): Promise<Pool[]> => {
   await delay(100);
-  if(_pools.size == 0){
+  if(_pools.size === 0){
     let tokens = await listTokens(0);
     let o = tokens.length > 5 ? 5 : tokens.length;
     tokens = tokens.slice(0, o);
@@ -98,64 +98,64 @@ export const lpTokenRate = async (token1: string, token2: string, value: number)
 };
 
 export const addLiquidity = async (token1: string, token2: string, value: number): Promise<void> => {
-    await delay(100);
-    let share = await calculateShare(token1, token2, value);
-    let rates = await conversionRate(token1, token2);
-    
-    let id1 = token1 + "_" + token2;
-    let id2 = token2 + "_" + token1;
-    if(!_tokens_to_pool_addr.has(id1) && !_tokens_to_pool_addr.has(id2)){
-      let np: Pool = {
-        address: generateAddress(),
-        info: null,
-        providerFee: 0.0002,
-        token1: await tokenInfo(token1),
-        token2: await tokenInfo(token2),
-      };
-      _pools.set(np.address, np);
-      _tokens_to_pool_addr.set(id1, np.address);
-      _tokens_to_pool_addr.set(id2, np.address);
-    }
-    let pid = _tokens_to_pool_addr.get(id1);
-    if(pid){
-      let p = _pools.get(pid);
-      if(p){
-        let ps = _user_positions.find(p=>p.pool?.address === pid) ?? undefined;
-        if(ps){
-          ps.share += share.share;
-          ps.liquidityTokens += share.liquidityTokens;
-          ps.token1V = value;
-          ps.token2V = value * rates.fwd;
-        }else{
-          _user_positions.push({
-            liquidityTokens: share.liquidityTokens,
-            share: share.share,
-            token1V: value,
-            token2V: value * rates.fwd,
-            pool: p
-          })
-        }
+  await delay(100);
+  let share = await calculateShare(token1, token2, value);
+  let rates = await conversionRate(token1, token2);
+
+  let id1 = token1 + "_" + token2;
+  let id2 = token2 + "_" + token1;
+  if(!_tokens_to_pool_addr.has(id1) && !_tokens_to_pool_addr.has(id2)){
+    let np: Pool = {
+      address: generateAddress(),
+      info: null,
+      providerFee: 0.0002,
+      token1: await tokenInfo(token1),
+      token2: await tokenInfo(token2),
+    };
+    _pools.set(np.address, np);
+    _tokens_to_pool_addr.set(id1, np.address);
+    _tokens_to_pool_addr.set(id2, np.address);
+  }
+  let pid = _tokens_to_pool_addr.get(id1);
+  if(pid){
+    let p = _pools.get(pid);
+    if(p){
+      let ps = _user_positions.find(p=>p.pool?.address === pid) ?? undefined;
+      if(ps){
+        ps.share += share.share;
+        ps.liquidityTokens += share.liquidityTokens;
+        ps.token1V = value;
+        ps.token2V = value * rates.fwd;
+      }else{
+        _user_positions.push({
+          liquidityTokens: share.liquidityTokens,
+          share: share.share,
+          token1V: value,
+          token2V: value * rates.fwd,
+          pool: p
+        });
       }
     }
+  }
 };
 
 export const removeLiquidity = async (token1: string, token2: string, lpValue: number): Promise<void> => {
-    await delay(100);
-    let id1 = token1 + "_" + token2;
-    let pid = _tokens_to_pool_addr.get(id1);
-    if(pid){
-      let p = _pools.get(pid);
-      if(p){
-        let ps = _user_positions.find(p=>p.pool?.address === pid) ?? undefined;
-        if(ps){
-          ps.liquidityTokens -= lpValue;
-          if(ps.liquidityTokens === 0){
-            let index = _user_positions.indexOf(ps);
-            if (index > -1) {
-              _user_positions.splice(index, 1);
-            }
+  await delay(100);
+  let id1 = token1 + "_" + token2;
+  let pid = _tokens_to_pool_addr.get(id1);
+  if(pid){
+    let p = _pools.get(pid);
+    if(p){
+      let ps = _user_positions.find(p=>p.pool?.address === pid) ?? undefined;
+      if(ps){
+        ps.liquidityTokens -= lpValue;
+        if(ps.liquidityTokens === 0){
+          let index = _user_positions.indexOf(ps);
+          if (index > -1) {
+            _user_positions.splice(index, 1);
           }
         }
       }
     }
+  }
 };

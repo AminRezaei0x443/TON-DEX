@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { changeInput, selectionModal, selectLiquidity, syncTokenBalances } from "../../redux/reducers/liquidity";
+import { calculateShare, changeInput, conversionRate, selectionModal, selectLiquidity, syncTokenBalances } from "../../redux/reducers/liquidity";
 import { showModal } from "../../redux/reducers/modals";
 import { useInputBalanceEffect } from "../../utils/hooks";
 import TokenInput from "../TokenInput";
@@ -26,6 +26,14 @@ export default function AddLiquidityPanel() {
   const handleSelectToToken = () => handleSelectToken("token2");
 
   useInputBalanceEffect(liquidityState.token1, liquidityState.token2, syncTokenBalances);
+
+  useEffect(()=>{
+    dispatch(calculateShare());
+  },[dispatch,liquidityState.token1,liquidityState.token2, liquidityState.inputs.token1, liquidityState.inputs.token2]);
+
+  useEffect(()=>{
+    dispatch(conversionRate());
+  },[dispatch,liquidityState.token1,liquidityState.token2]);
 
   return (
     <div className={styles.panel}>

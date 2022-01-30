@@ -1,3 +1,4 @@
+import { PoolPositionInfo } from "../../api/pool";
 import { TokenBalanced } from "./tokens";
 
 export interface LiquidityState {
@@ -12,9 +13,11 @@ export interface LiquidityState {
     conversionRate: number;
     removePercentage: string;
     add: AddLiquidityState;
+    liquidity: PoolPositionInfo[] | null;
 }
 
 interface AddLiquidityState {
     token1: boolean;
     token2: boolean;
+    position: PoolPositionInfo|null;
 }

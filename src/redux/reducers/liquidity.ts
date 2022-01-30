@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { approveTokenAccess } from "../../api/pool";
+import { approveTokenAccess, calculateShare as getShareInfo, listPositions, PoolPositionInfo } from "../../api/pool";
 import { conversionRate as getConversionRate } from "../../api/swap";
 import { Token, tokenBalance } from "../../api/tokens";
 import { cleanUpDecimal } from "../../utils/numberUtils";
@@ -22,18 +22,25 @@ const initialState :LiquidityState ={
   removePercentage:"0.0%",
   add: {
     token1: false,
-    token2: false
-  }
+    token2: false,
+    position: null
+  },
+  liquidity:null
 };
 
 
 const handleChangeInput = (state:LiquidityState, { payload }:PayloadAction<{key: "token1"|"token2", value: number}>) => {
   state.inputs[payload.key] = payload.value;
+  const other = payload.key === "token1"?"token2":"token1";
+  if(state.conversionRate !== 0){
+    state.inputs[other] = state.inputs[payload.key] * state.conversionRate;
+  }
 };
 
 
 const handleChangeToken = (state:LiquidityState, { payload }:PayloadAction<{key: "token1"|"token2", value: Token}>) => {
   state[payload.key] = payload.value;
+  state.add[payload.key] = false;
 };
 
 const handleChangeRemovePercentage = (state:LiquidityState, { payload }:PayloadAction<string>) => {
@@ -49,11 +56,34 @@ const handleSelectionModal = (state:LiquidityState, { payload }:PayloadAction<"t
   state.selectionModal = payload;
 };
 
-export const conversionRate = createAsyncThunk(
+export const conversionRate = createAsyncThunk<{rate:number},undefined, {state: RootState}>(
   "liquidity/conversionRate",
-  async ({ from,to }:{from:Token, to:Token }) => {
-    const res = await getConversionRate(from.address, to.address);
+  async (_,thunkAPI) => {
+    const { token1, token2 } = thunkAPI.getState().liquidity;
+    if(token1 === null || token2 === null) return { rate:0 };
+
+    const res = await getConversionRate(token1.address, token2.address);
     return { rate: res.fwd };
+  });
+
+export const calculateShare = createAsyncThunk<PoolPositionInfo|null,undefined, {state: RootState}>(
+  "liquidity/calculateShare",
+  async (_,thunkAPI) => {
+    const { token1, token2, inputs } = thunkAPI.getState().liquidity;
+    if(token1 === null || token2 === null || inputs.token1 === 0 || inputs.token2 === 0){
+      return null;
+    }
+    return await getShareInfo(token1.address, token2.address, inputs.token1);
+  });
+
+export const retrieveLiquidities = createAsyncThunk<PoolPositionInfo[]|null, undefined, {state:RootState}>(
+  "liquidity/retrieveLiquidities",
+  async (_, thunkAPI) => {
+    const { walletAddress } = thunkAPI.getState().account;
+    if (walletAddress === null) {
+      return null;
+    }
+    return await listPositions(walletAddress);
   });
 
 export const syncTokenBalances = createAsyncThunk(
@@ -115,6 +145,14 @@ export const liquiditySlice = createSlice({
 
     builder.addCase(approveToken.fulfilled, (state: LiquidityState, { payload }) => {
       state.add[payload.key] = payload.res;
+    });
+
+    builder.addCase(retrieveLiquidities.fulfilled, (state: LiquidityState, { payload }) => {
+      state.liquidity = payload;
+    });
+
+    builder.addCase(calculateShare.fulfilled, (state: LiquidityState, { payload }) => {
+      state.add.position = payload;
     });
   }
 });

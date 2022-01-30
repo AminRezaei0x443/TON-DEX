@@ -1,33 +1,41 @@
 import cn from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { PoolPositionInfo } from "../../api/pool";
 import { TONCOIN, USDT } from "../../api/tokens";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectAccount } from "../../redux/reducers/account";
-import { panel } from "../../redux/reducers/liquidity";
+import { panel, retrieveLiquidities, selectLiquidity } from "../../redux/reducers/liquidity";
 import Button from "../Button";
 import Chevron from "../icons/Chevron";
 import styles from "./index.module.scss";
 
 
 export default function List() {
-  const accountState = useAppSelector(selectAccount);
+  const { walletAddress } = useAppSelector(selectAccount);
+  const { liquidity } = useAppSelector(selectLiquidity);
+  const dispatch = useAppDispatch();
 
-  const list = ["s"];
 
-  const connected = accountState.walletAddress !== null;
+  const connected = walletAddress !== null;
+
+  useEffect(()=>{
+    dispatch(retrieveLiquidities());
+  },[walletAddress,dispatch]);
 
   return <div className={styles.list}>
     <h3>Your Liquidity</h3>
-    {!connected ?
+    {!connected || liquidity === null ?
       <NotConnected />
-      :list.length === 0 ?
+      :liquidity.length === 0 ?
         <EmptyList /> :
-        <>
-          <Item />
-          <Item />
-        </>}
+        liquidity.map((position,index) =>
+          <Item
+            key={position.pool?.address ?? `pos-${index}`}
+            positionInfo={position}
+          />
+        )
+    }
   </div>;
 }
 
@@ -39,7 +47,7 @@ function EmptyList() {
 }
 
 interface IItemProps {
-  positionInfo?: PoolPositionInfo;
+  positionInfo: PoolPositionInfo;
 }
 
 function Item({ positionInfo }:IItemProps) {

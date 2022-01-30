@@ -69,7 +69,7 @@ export interface PoolPositionInfo{
     share: number;
 };
 
-const _user_positions: PoolPositionInfo[] = [];
+let _user_positions: PoolPositionInfo[] = [];
 
 export const listPositions = async (address: string): Promise<PoolPositionInfo[]> => {
   await delay(100);
@@ -97,8 +97,7 @@ export const lpTokenRate = async (token1: string, token2: string, value: number)
   };
 };
 
-export const addLiquidity = async (token1: string, token2: string, value: number): Promise<void> => {
-  await delay(100);
+export const addLiquidity = async (token1: string, token2: string, value: number) :Promise<boolean> => {
   let share = await calculateShare(token1, token2, value);
   let rates = await conversionRate(token1, token2);
 
@@ -116,27 +115,40 @@ export const addLiquidity = async (token1: string, token2: string, value: number
     _tokens_to_pool_addr.set(id1, np.address);
     _tokens_to_pool_addr.set(id2, np.address);
   }
+
   let pid = _tokens_to_pool_addr.get(id1);
+
   if(pid){
     let p = _pools.get(pid);
+
     if(p){
-      let ps = _user_positions.find(p=>p.pool?.address === pid) ?? undefined;
-      if(ps){
-        ps.share += share.share;
-        ps.liquidityTokens += share.liquidityTokens;
-        ps.token1V = value;
-        ps.token2V = value * rates.fwd;
+      let ps = _user_positions.findIndex(p=>p.pool?.address === pid);
+      if(ps !== -1){
+        const oldPosition = _user_positions[ps];
+        const newPosition = {
+          ...oldPosition,
+          share: oldPosition.share + share.share,
+          liquidityTokens: oldPosition.liquidityTokens + share.liquidityTokens,
+          token1V: value,
+          token2V: value * rates.fwd,
+        };
+
+        _user_positions = [..._user_positions.slice(0, ps),newPosition, ..._user_positions.slice(ps+1)];
+
       }else{
-        _user_positions.push({
+        const newPosition: PoolPositionInfo = {
           liquidityTokens: share.liquidityTokens,
           share: share.share,
           token1V: value,
           token2V: value * rates.fwd,
           pool: p
-        });
+        };
+        _user_positions = [..._user_positions , newPosition];
       }
     }
   }
+  await delay(100);
+  return true;
 };
 
 export const removeLiquidity = async (token1: string, token2: string, lpValue: number): Promise<void> => {

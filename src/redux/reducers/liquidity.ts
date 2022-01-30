@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { approveTokenAccess, calculateShare as getShareInfo, listPositions, PoolPositionInfo } from "../../api/pool";
+import { addLiquidity, approveTokenAccess, calculateShare as getShareInfo, listPositions, PoolPositionInfo } from "../../api/pool";
 import { conversionRate as getConversionRate } from "../../api/swap";
 import { Token, tokenBalance } from "../../api/tokens";
 import { cleanUpDecimal } from "../../utils/numberUtils";
 import { RootState } from "../store";
 import type { LiquidityState } from "../types/liquidity";
+import { showModal } from "./modals";
 import { notification } from "./notifications";
 
 
@@ -64,6 +65,34 @@ export const conversionRate = createAsyncThunk<{rate:number},undefined, {state: 
 
     const res = await getConversionRate(token1.address, token2.address);
     return { rate: res.fwd };
+  });
+
+export const confirmAddLiquidity = createAsyncThunk<boolean ,undefined, {state: RootState}>(
+  "liquidity/confirmAddLiquidity",
+  async (_,thunkAPI) => {
+    const { token1, token2, inputs } = thunkAPI.getState().liquidity;
+
+    console.log({ token1, token2, inputs });
+
+
+    if(token1 === null || token2 === null || inputs.token1 === 0){
+      thunkAPI.dispatch(notification({
+        message:"There was an issue adding liquidity!",
+        type: "failure"
+      }));
+      return false;
+    }
+
+    const res = await addLiquidity(token1.address, token2.address, inputs.token1);
+
+    thunkAPI.dispatch(showModal(null));
+    thunkAPI.dispatch(notification({
+      message:"Liquidity added?",
+      type:"success"
+    }));
+    thunkAPI.dispatch(retrieveLiquidities());
+
+    return res;
   });
 
 export const calculateShare = createAsyncThunk<PoolPositionInfo|null,undefined, {state: RootState}>(
@@ -153,6 +182,18 @@ export const liquiditySlice = createSlice({
 
     builder.addCase(calculateShare.fulfilled, (state: LiquidityState, { payload }) => {
       state.add.position = payload;
+    });
+
+    builder.addCase(confirmAddLiquidity.fulfilled, (state: LiquidityState, { payload }) => {
+      if(payload){
+        // reset to defaults
+        state.panel = "main";
+        state.conversionRate = 0;
+        state.inputs.token1 = 0;
+        state.inputs.token2 = 0;
+        state.token1 = null;
+        state.token2 = null;
+      }
     });
   }
 });

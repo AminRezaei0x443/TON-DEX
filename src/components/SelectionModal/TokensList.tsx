@@ -14,6 +14,7 @@ export default function TokensList({ onSelected }:IProps) {
   return <div className={styles.tokensList}>
     {displayList.map(token => (
       <TokenItem
+        key={token.address}
         token={token}
         onClick={()=>onSelected(token)}/>
     ))}

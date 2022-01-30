@@ -2,10 +2,9 @@ import cn from "classnames";
 import { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { PoolPositionInfo } from "../../api/pool";
-import { TONCOIN, USDT } from "../../api/tokens";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectAccount } from "../../redux/reducers/account";
-import { panel, retrieveLiquidities, selectLiquidity } from "../../redux/reducers/liquidity";
+import { changeToken, panel, retrieveLiquidities, selectLiquidity } from "../../redux/reducers/liquidity";
 import Button from "../Button";
 import Chevron from "../icons/Chevron";
 import styles from "./index.module.scss";
@@ -54,6 +53,8 @@ function Item({ positionInfo }:IItemProps) {
   const [expanded, setExpanded] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
+  const { pool } = positionInfo;
+
   const handleExpanded = () => {
     setExpanded(p => !p);
   };
@@ -62,11 +63,24 @@ function Item({ positionInfo }:IItemProps) {
     dispatch(panel("remove"));
   };
 
+  const handleAddLiquidity = () => {
+
+    if(pool?.token1){
+      dispatch(changeToken({ key:"token1", value: pool.token1 }));
+    }
+
+    if(pool?.token2){
+      dispatch(changeToken({ key:"token2", value: pool.token2 }));
+    }
+
+    dispatch(panel("add"));
+  };
+
   return <>
     <div className={styles.item} onClick={handleExpanded}>
-      <img alt={"first"} src={TONCOIN.logoURI}/>
-      <img alt={"second"} src={USDT.logoURI}/>
-      <span>TONCOIN/BNB</span>
+      <img alt={pool?.token1?.name} src={pool?.token1?.logoURI}/>
+      <img alt={pool?.token2?.name} src={pool?.token2?.logoURI}/>
+      <span>{pool?.token1?.symbol}/{pool?.token2?.symbol}</span>
       <Chevron className={cn({ [styles.expandedChevron]: expanded })}/>
     </div>
     <CSSTransition
@@ -77,24 +91,22 @@ function Item({ positionInfo }:IItemProps) {
       classNames={{
         enter:styles.enter,
         enterActive:styles.enterActive,
-        // appear:styles.appear,
-        // appearActive:styles.appearActive,
         exit:styles.exit,
         exitActive:styles.exitActive,
       }}>
       <div className={styles.details}>
         <div className={styles.info}>
-          <label>Pooled TONCOIN:</label>
-          <span>1032.1 <img alt={"first"} src={TONCOIN.logoURI}/></span>
-          <label>Pooled BNB:</label>
-          <span>3.12 <img alt={"second"} src={USDT.logoURI}/></span>
+          <label>Pooled {pool?.token1?.symbol}:</label>
+          <span>{positionInfo.token1V?.toFixed(5)??0} <img alt={pool?.token1?.name} src={pool?.token1?.logoURI}/></span>
+          <label>Pooled {pool?.token2?.symbol}:</label>
+          <span>{positionInfo.token2V?.toFixed(5)??0} <img alt={pool?.token2?.name} src={pool?.token2?.logoURI}/></span>
           <label>Pool Tokens:</label>
-          <span>43.11</span>
+          <span>{positionInfo.liquidityTokens.toFixed(3)}</span>
           <label>Pool Share:</label>
-          <span>0.01%</span>
+          <span>{positionInfo.share.toFixed(3)}%</span>
         </div>
         <div className={styles.actions}>
-          <Button buttonType="primarySmall" title="Add"/>
+          <Button buttonType="primarySmall" title="Add" onClick={handleAddLiquidity}/>
           <Button buttonType="primarySmall" title="Remove" onClick={handleRemoveClick}/>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { approveToken, selectLiquidity } from "../../redux/reducers/liquidity";
+import { showModal } from "../../redux/reducers/modals";
 import Button from "../Button";
 import styles from "./index.module.scss";
 
@@ -13,20 +14,20 @@ export default function Actions(){
 
   const supplyDisabled = !add.token1 || !add.token2 || inputs.token1 === 0 || inputs.token2 === 0;
 
-  const handleSupplyClick = async () => {
-
+  const handleSupplyClick = () => {
+    dispatch(showModal("confirm-supply"));
   };
 
   return <div className={styles.actions}>
     <Button
       buttonType="primaryLarge"
-      title={`Approve ${token1?.symbol}`}
+      title={`Approve ${token1?.symbol ?? ""}`}
       className={styles.first}
       disabled={add.token1 || token1 === null}
       onClick={handleApproveToken1}/>
     <Button
       buttonType="primaryLarge"
-      title={`Approve ${token2?.symbol}`}
+      title={`Approve ${token2?.symbol ?? ""}`}
       className={styles.second}
       disabled={add.token2 || token2 === null}
       onClick={handleApproveToken2}/>

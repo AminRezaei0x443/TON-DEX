@@ -32,34 +32,31 @@
 
 .transactionSummary {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row wrap;
   font-size: 1.125rem;
   font-weight: 700;
-  gap: 0.75rem;
+  align-items: flex-end;
+  justify-content: flex-start;
 
-  svg {
-    width: 2rem;
-    height: 1rem;
-    stroke: $border-color;
+  h1 {
+    font-size: 2rem;
+    margin: 0;
+    display: inline;
+    margin-right: 1rem;
+    color: $primary-dark-color;
   }
 
-  .tokenItem {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 0.75rem;
+  span {
+    margin-left: 0.75rem;
+  }
 
-    img {
-      max-width: 2rem;
-      min-width: 2rem;
-      max-height: 2rem;
-      min-height: 2rem;
+  img {
+    max-width: 1.5rem;
+    max-height: 1.5rem;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
 
-      @include round-image;
-    }
-
-    .amount {
-      flex: 1;
-    }
+    @round-image;
   }
 }
 
@@ -89,7 +86,20 @@
 
   span {
     font-weight: 700;
-    text-align: end;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+
+    img {
+      min-width: 1.5rem;
+      min-height: 1.5rem;
+      max-width: 1.5rem;
+      max-height: 1.5rem;
+
+      @include round-image;
+    }
   }
 
   .priceImpactIncr {

@@ -33,3 +33,7 @@ code {
 a {
   text-decoration: none;
 }
+
+img[alt] {
+  font-size: 0.5rem;
+}

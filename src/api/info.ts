@@ -20,7 +20,7 @@ export interface Prices {
 };
 
 const _intervalMs = {
-  [DataInterval.H24]: 1* 60 * 60 * 1000,
+  [DataInterval.H24]: 1 * 60 * 60 * 1000,
   [DataInterval.W1]: 24 * 60 * 60 * 1000,
   [DataInterval.M1]: 30 * 24 * 60 * 60 * 1000,
 };

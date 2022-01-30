@@ -17,6 +17,7 @@ const initialState :LiquidityState ={
     to:0,
   },
   selectionModal:null,
+  removePercentage:"0.0%",
 };
 
 
@@ -27,6 +28,10 @@ const handleChangeInput = (state:LiquidityState, { payload }:PayloadAction<{key:
 
 const handleChangeToken = (state:LiquidityState, { payload }:PayloadAction<{key: "to"|"from", value: Token}>) => {
   state[payload.key] = payload.value;
+};
+
+const handleChangeRemovePercentage = (state:LiquidityState, { payload }:PayloadAction<string>) => {
+  state.removePercentage = payload;
 };
 
 
@@ -53,7 +58,8 @@ export const liquiditySlice = createSlice({
     changeInput:handleChangeInput,
     changeToken:handleChangeToken,
     selectionModal:handleSelectionModal,
-    panel:handlePanel
+    panel:handlePanel,
+    changeRemovePercentage:handleChangeRemovePercentage
   },
   extraReducers: (builder) => {
     builder.addCase(conversionRate.fulfilled, (state: LiquidityState, { payload }) => {
@@ -65,7 +71,7 @@ export const liquiditySlice = createSlice({
 });
 
 
-export const { changeInput,changeToken,selectionModal,panel }= liquiditySlice.actions;
+export const { changeInput,changeToken,selectionModal,panel,changeRemovePercentage }= liquiditySlice.actions;
 
 export const selectLiquidity = (state: RootState): LiquidityState => state.liquidity;
 

@@ -10,4 +10,5 @@ export interface LiquidityState {
     },
     selectionModal: "from"|"to"|null;
     conversionRate: number;
+    removePercentage: string;
 }

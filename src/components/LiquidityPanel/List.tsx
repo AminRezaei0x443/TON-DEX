@@ -5,6 +5,7 @@ import { PoolPositionInfo } from "../../api/pool";
 import { TONCOIN, USDT } from "../../api/tokens";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectAccount } from "../../redux/reducers/account";
+import { panel } from "../../redux/reducers/liquidity";
 import Button from "../Button";
 import Chevron from "../icons/Chevron";
 import styles from "./index.module.scss";
@@ -12,7 +13,6 @@ import styles from "./index.module.scss";
 
 export default function List() {
   const accountState = useAppSelector(selectAccount);
-  const dispatch = useAppDispatch();
 
   const list = ["s"];
 
@@ -44,9 +44,14 @@ interface IItemProps {
 
 function Item({ positionInfo }:IItemProps) {
   const [expanded, setExpanded] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const handleExpanded = () => {
     setExpanded(p => !p);
+  };
+
+  const handleRemoveClick = () => {
+    dispatch(panel("remove"));
   };
 
   return <>
@@ -82,7 +87,7 @@ function Item({ positionInfo }:IItemProps) {
         </div>
         <div className={styles.actions}>
           <Button buttonType="primarySmall" title="Add"/>
-          <Button buttonType="primarySmall" title="Remove"/>
+          <Button buttonType="primarySmall" title="Remove" onClick={handleRemoveClick}/>
         </div>
       </div>
     </CSSTransition>

@@ -1,0 +1,107 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
+@import "../../assets/styles/constants";
+
+.panel {
+  border: solid 2px $border-color;
+  border-radius: $border-radius;
+  padding: 2rem 3rem;
+  display: flex;
+  background-color: white;
+  flex-flow: column nowrap;
+  max-width: 400px;
+  min-width: 250px;
+  width: 30%;
+  gap: 2rem;
+}
+
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .action {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: $primary-dark-color;
+
+    @include hover-lighten;
+  }
+}
+
+%inner-pane {
+  border-radius: 14px;
+  border: 1px solid $border-color;
+  padding: 1.25rem 1.875rem;
+}
+
+.amount {
+  @extend %inner-pane;
+
+  input {
+    outline: none;
+    border: none;
+    color: $primary-color;
+    font-size: 40px;
+    margin: 1rem 0;
+    width: 100%;
+    background-color: transparent;
+  }
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-content: center;
+  gap: 8px;
+
+  @extend %inner-pane;
+
+  span {
+    font-weight: 500;
+    color: $primary-dark-color;
+  }
+
+  label {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+
+    img {
+      max-width: 1.5rem;
+      min-width: 1.5rem;
+      max-height: 1.5rem;
+      min-height: 1.5rem;
+
+      @include round-image;
+    }
+
+    font-weight: 700;
+    font-size: 0.625rem;
+    color: $primary-dark-color;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  gap: 10px;
+
+  .button {
+    padding: 0.75rem 2.5rem;
+  }
+}

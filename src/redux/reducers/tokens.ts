@@ -26,8 +26,6 @@ export const retrieveTokens = createAsyncThunk(
 
 
 const handleFilterTokens = (state:TokensState, { payload }:PayloadAction<string>) => {
-  console.log(payload);
-
   if (payload.trim().length === 0){
     state.displayList = state.tokens;
   }else{

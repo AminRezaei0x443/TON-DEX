@@ -1,6 +1,7 @@
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import AddLiquidityPanel from "../../components/AddLiquidityPanel";
 import LiquidityPanel from "../../components/LiquidityPanel";
+import RemoveLiquidityPanel from "../../components/RemoveLiquidityPanel";
 import { useAppSelector } from "../../redux/hooks";
 import { selectLiquidity } from "../../redux/reducers/liquidity";
 import styles from "./index.module.scss";
@@ -25,7 +26,9 @@ export default function LiquidityPage() {
             <LiquidityPanel/>
             : panel === "add" ?
               <AddLiquidityPanel/>
-              :null}
+              : panel === "remove" ?
+                <RemoveLiquidityPanel/>
+                :null}
         </CSSTransition>
       </SwitchTransition>
     </div>

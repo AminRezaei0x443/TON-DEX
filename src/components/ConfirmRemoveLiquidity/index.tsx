@@ -73,7 +73,7 @@ function TransactionInfo() {
     <span>
       <img alt={token1?.name} src={token1?.logoURI}/>
       <img alt={token2?.name} src={token2?.logoURI}/>
-      {(remove.position.liquidityTokens * percentValue).toFixed(4)}
+      {(remove.position.liquidityTokens * percentValue / 100).toFixed(4)}
     </span>
     <label>Rate</label>
     <span>{(remove.position.pool.info?.fwdRate??0).toFixed(4)} {token1?.symbol}/{token2?.symbol}</span>

@@ -70,8 +70,17 @@ export const swapInfo = async (input: TokenInput): Promise<SwapInfo> => {
   };
 };
 
-export const confirmSwap = async (input: TokenInput): Promise<boolean> => {
+interface SwapOutput{
+  successful: boolean;
+  swapValue: number;
+};
+
+export const confirmSwap = async (input: TokenInput): Promise<SwapOutput> => {
   await delay(100);
-  return true;
+  let rate = await conversionRate(input.token1, input.token2);
+  return {
+    successful: true,
+    swapValue: rate.fwd * input.value
+  };
 };
 

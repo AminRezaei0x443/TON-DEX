@@ -112,7 +112,7 @@ export const confirmAddLiquidity = createAsyncThunk<boolean ,undefined, {state: 
 
     thunkAPI.dispatch(showModal(null));
     thunkAPI.dispatch(notification({
-      message:"Liquidity added?",
+      message:"Liquidity added successfuly!",
       type:"success"
     }));
     thunkAPI.dispatch(retrieveLiquidities());
@@ -141,7 +141,7 @@ export const confirmRemoveLiquidity = createAsyncThunk<boolean ,undefined, {stat
 
     thunkAPI.dispatch(showModal(null));
     thunkAPI.dispatch(notification({
-      message:"Liquidity removed?",
+      message:"Liquidity removed from the pool, tokens and fees collected!",
       type:"success"
     }));
     thunkAPI.dispatch(retrieveLiquidities());
@@ -190,7 +190,7 @@ export const approveToken = createAsyncThunk<{res:boolean, key:"token1"|"token2"
     const token = thunkAPI.getState().liquidity[key];
     if(walletAddress === null || token === null){
       thunkAPI.dispatch(notification({
-        message: "There was a problem approving access.",
+        message: "There was a problem getting token approval!",
         type: "failure"
       }));
       return { res:false, key };
@@ -206,7 +206,7 @@ export const approveRemoval = createAsyncThunk<boolean, undefined,{state: RootSt
     const { position } = thunkAPI.getState().liquidity.remove;
     if(walletAddress === null || !position?.pool?.token1 || !position?.pool?.token2){
       thunkAPI.dispatch(notification({
-        message: "There was a problem approving removal.",
+        message: "There was a problem getting remove approval!",
         type: "failure"
       }));
       return false;

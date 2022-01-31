@@ -72,7 +72,7 @@ export const retrieveChart = createAsyncThunk(
   async ({ address1, address2, interval }:{ address1:string; address2:string; interval:DataInterval }, thunkAPI) => {
     const res = await historicalPrices(address1,address2,interval);
     if (res === null){
-      thunkAPI.dispatch(notification({ message:"There was an error whilte fetching info!", type:"failure" }));
+      thunkAPI.dispatch(notification({ message:"There was an error while fetching info!", type:"failure" }));
     }
     return res;
   });
@@ -90,20 +90,20 @@ export const conversionRate = createAsyncThunk(
 export const confirmSwap = createAsyncThunk(
   "swap/confirmSwap",
   async ({ from,to,value }:{ from:TokenBalanced, to:TokenBalanced, value: number }, thunkAPI) => {
-    const res = _confirmSwap({
+    const res = await _confirmSwap({
       token1:from.address,
       token2:to.address,
       value,
     });
 
-    if(!res){
+    if(!res.successful){
       thunkAPI.dispatch(notification({
-        message: "There was a problem!",
+        message: "There was a problem swapping the tokens!",
         type:"failure",
       }));
     }else{
       thunkAPI.dispatch(notification({
-        message: "Successfully swapped!?",
+        message: `Successfully swapped ${value.toFixed(3)} ${from.symbol} for ${res.swapValue.toFixed(3)} ${to.symbol}!`,
         type:"success",
       }));
     }

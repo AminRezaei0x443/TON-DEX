@@ -15,7 +15,8 @@ export default function VolumeChart() {
   return <div className={styles.volumeChart}>
     <ResponsiveContainer
       width="100%"
-      height={175}
+      height="100%"
+      // height={175}
       className={styles.chartContainer}>
       <BarChart data={volume.ticks}>
         <Tooltip

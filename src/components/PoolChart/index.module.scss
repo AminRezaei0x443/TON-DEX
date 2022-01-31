@@ -20,7 +20,6 @@
   flex-flow: row-reverse wrap;
   padding: 2rem 3rem 0;
   align-items: flex-start;
-  gap: 10px;
 }
 
 .header {
@@ -80,6 +79,8 @@
 }
 
 .volumeChart {
+  @extend %chart;
+
   width: 80%;
   margin: 0 auto 2rem;
 }

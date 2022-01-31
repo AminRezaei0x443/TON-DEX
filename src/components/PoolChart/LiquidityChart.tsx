@@ -15,7 +15,8 @@ export default function LiquidityChart() {
   return <div className={styles.chart}>
     <ResponsiveContainer
       width="100%"
-      height={175}
+      height="100%"
+      // height={175}
       className={styles.chartContainer}>
       <AreaChart data={liquidity.ticks}>
         <defs>

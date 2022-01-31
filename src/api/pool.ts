@@ -16,6 +16,9 @@ interface PoolInfo{
     volume7D?: number;
     fwdRate: number;
     bwdRate: number;
+    token1Locked?: number;
+    token2Locked?: number;
+    poolFees?: number;
 }
 
 const _pools: Map<string, Pool> = new Map();
@@ -36,14 +39,19 @@ export const listPools = async (page: number, loadInfo: boolean = true): Promise
         let id2 = t2.address + "_" + t1.address;
         if(!_tokens_to_pool_addr.has(id1) && !_tokens_to_pool_addr.has(id2)){
           let rates = await conversionRate(t1.address, t2.address);
+          let t1V = Math.random() * 1e7;
+          let d24V = Math.random() * 1e7;
           let np: Pool = {
             address: generateAddress(),
             info: loadInfo ? {
               fwdRate: rates.fwd,
               bwdRate: rates.bwd,
               liquidity: Math.random() * 1e8,
-              volume24H: Math.random() * 1e7,
-              volume7D: Math.random() * 1e8 * 2
+              volume24H: d24V,
+              volume7D: Math.random() * 1e8 * 2,
+              token1Locked: t1V,
+              poolFees: 0.08 * 0.01 * d24V,
+              token2Locked: t1V * rates.fwd,
             }: null,
             providerFee: 0.0002,
             token1: t1,

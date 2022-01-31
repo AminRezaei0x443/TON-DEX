@@ -73,7 +73,16 @@
 
 .overview {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  gap: 10px;
+  flex-flow: row now;
+  gap: 4rem;
+  justify-content: flex-start;
 }
+
+/*
+small:
+.overview {
+  display: grid;
+  grid-auto-rows: 1fr;
+  justify-content: stretch;
+}
+*/

@@ -1,0 +1,93 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
+@import "../../assets/styles/constants";
+
+.container {
+  border: solid 2px $border-color;
+  border-radius: $border-radius;
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: white;
+  min-width: 180px;
+  max-width: 200px;
+  width: 20%;
+  overflow: hidden;
+  justify-content: space-between;
+  padding: 1.875rem 1.75rem;
+  gap: 0.875rem;
+  color: $primary-dark-color;
+
+  h4 {
+    margin: 0;
+  }
+}
+
+.section {
+  h3 {
+    font-size: 1.25rem;
+    margin: 0.5rem 0 0.25rem;
+  }
+}
+
+.delta {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+
+  svg {
+    width: 0.825rem;
+    height: 0.825rem;
+  }
+}
+
+.incr {
+  color: $increasing-color;
+
+  svg {
+    stroke: $increasing-color;
+    transform: rotate(180deg);
+  }
+}
+
+.decr {
+  color: $decreasing-color;
+
+  svg {
+    stroke: $decreasing-color;
+  }
+}
+
+.lockedSection {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+  background-color: rgba($primary-color, 0.06);
+  border: 2px solid $border-color;
+  border-radius: 18px;
+  padding: 0.75rem 1rem;
+
+  .row {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.75rem;
+
+    img {
+      max-width: 1.25rem;
+      min-width: 1.25rem;
+      max-height: 1.25rem;
+      min-height: 1.25rem;
+
+      @include round-image;
+    }
+
+    span {
+      flex: 1;
+      font-weight: 700;
+    }
+  }
+}

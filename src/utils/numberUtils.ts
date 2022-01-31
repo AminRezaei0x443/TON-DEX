@@ -12,7 +12,7 @@ export const abbreviateNumber = (num:number) =>{
 
   const tier = Math.log10(Math.abs(num)) / 3 | 0;
 
-  if(tier === 0) return num;
+  if(tier === 0) return `${num}`;
 
   const suffix = SYMBOL[tier];
   const scale = Math.pow(10, tier * 3);

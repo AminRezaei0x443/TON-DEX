@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PoolChart from "../../components/PoolChart";
+import PoolInfoPanel from "../../components/PoolInfoPanel";
 import TopPoolsList from "../../components/TopPoolsList";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { retrievePoolInfo, selectInfo } from "../../redux/reducers/info";
@@ -44,6 +45,7 @@ function Information() {
       <span>1 {pool?.token2?.symbol} = {pool?.info?.bwdRate.toFixed(4)} {pool?.token1?.symbol}</span>
     </p>
     <div className={styles.overview}>
+      <PoolInfoPanel />
       <PoolChart />
     </div>
   </div>;

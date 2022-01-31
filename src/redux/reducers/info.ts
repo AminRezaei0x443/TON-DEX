@@ -119,6 +119,10 @@ export const infoSlice = createSlice({
     });
 
     builder.addCase(retrievePoolInfo.fulfilled, (state, { payload }) => {
+      if(payload === null){
+        window.location.replace("/404");
+        return;
+      }
       state.pool = payload;
     });
 

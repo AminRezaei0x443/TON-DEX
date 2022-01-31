@@ -1,5 +1,6 @@
 @import "../../assets/styles/colors";
 @import "../../assets/styles/mixins";
+@import "../../assets/styles/constants";
 
 .container {
   position: fixed;
@@ -13,25 +14,42 @@
 }
 
 .toast {
-  width: 250px;
-  padding: 1rem;
-  border-radius: 1rem;
-  box-shadow: 0 2px 3px rgba(black, 0.1);
+  max-width: 250px;
+  min-width: 200px;
+  width: 20%;
+  padding: 1rem 1.5rem;
+  border-radius: $toast-radius;
   position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 8px;
+  margin: 0;
 
-  @include hover-darken;
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  span {
+    flex: 1;
+  }
+
+  @include hover-lighten;
 }
 
 .normal {
   background-color: $toast-background-color;
+  color: $toast-color;
 }
 
 .success {
   background-color: $toast-success-background-color;
+  color: $toast-success-color;
 }
 
 .failure {
   background-color: $toast-failure-background-color;
+  color: $toast-failure-color;
 }
 
 .slideIn {

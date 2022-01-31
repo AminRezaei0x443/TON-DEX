@@ -3,6 +3,7 @@ import React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { dismissNotification, selectNotifications } from "../../redux/reducers/notifications";
+import NotificationIcons from "../icons/NotificationIcons";
 import styles from "./index.module.scss";
 import { ToastProps } from "./types";
 
@@ -44,7 +45,7 @@ export default function Notifications() {
 
 function Toast({ message, type = "normal", onClick }:ToastProps){
   return (
-    <span
+    <p
       className={cn({
         [styles.toast]:true,
         [styles.normal]:type==="normal",
@@ -52,7 +53,16 @@ function Toast({ message, type = "normal", onClick }:ToastProps){
         [styles.failure]:type==="failure"
       })}
       onClick={onClick}>
-      {message}
-    </span>
+      {
+        type === "normal"?
+          <NotificationIcons.Normal/>
+          :type === "failure"?
+            <NotificationIcons.Failure/>
+            :type === "success"?
+              <NotificationIcons.Success/>
+              :null
+      }
+      <span>{message}</span>
+    </p>
   );
 }

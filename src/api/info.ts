@@ -53,7 +53,7 @@ export const historicalPrices = async (token1: string, token2: string, interval:
   };
 };
 
-interface LiquidityInfo{
+export interface LiquidityInfo{
     current: number;
     ticks: ValueTick[];
 }
@@ -83,7 +83,7 @@ export const liquidityChanges = async (): Promise<LiquidityInfo> => {
 };
 
 
-interface VolumeInfo{
+export interface VolumeInfo{
     current: number;
     ticks: ValueTick[];
 }

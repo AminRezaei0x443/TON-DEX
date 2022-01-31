@@ -10,15 +10,30 @@
   background-color: white;
   gap: 10px;
   min-width: 300px;
-  max-width: 900px;
-  min-height: 530px;
+  width: 45%;
   overflow: hidden;
 }
 
 .header {
-  padding: 3rem 1.75rem;
+  padding: 2rem 3rem 0;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: column wrap;
+  color: $primary-dark-color;
+
+  h5 {
+    margin: 0;
+    font-weight: 900;
+  }
+
+  h1 {
+    margin: 6px 0;
+    font-weight: 900;
+  }
+
+  span {
+    opacity: 0.5;
+    font-weight: 500;
+  }
 }
 
 .title {
@@ -47,55 +62,10 @@
   }
 }
 
-.info {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: baseline;
-  gap: 1rem;
-
-  .ratio {
-    color: $primary-dark-color;
-    display: inline-flex;
-    gap: 0.5rem;
-    align-items: baseline;
-
-    h4 {
-      font-weight: 900;
-      margin: 0;
-      font-size: 2.25rem;
-    }
-
-    span {
-      font-weight: 900;
-      opacity: 0.5;
-      font-size: 1rem;
-    }
-  }
-
-  .diff {
-    color: $increasing-color;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 0 1rem;
-  }
-
-  .decreasing {
-    color: $decreasing-color;
-  }
-
-  .timeSpanSelector {
-    flex: 1;
-    display: inline-flex;
-    justify-content: flex-end;
-  }
-}
-
 .chartContainer {
   @extend %chart-container;
 }
 
 .chart {
   @extend %chart;
-
-  align-self: flex-end;
 }

@@ -6,6 +6,7 @@ import "./App.scss";
 import Header from "./components/Header";
 import Modals from "./components/Modals";
 import Notifications from "./components/Notifications";
+import InfoPage from "./pages/Info";
 import LiquidityPage from "./pages/Liquidity";
 import NotFound from "./pages/NotFound";
 import SwapPage from "./pages/Swap";
@@ -30,6 +31,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SwapPage/>}/>
           <Route path="/liquidity" element={<LiquidityPage />}/>
+          <Route path="/info" element={<InfoPage />}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
       </div>

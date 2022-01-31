@@ -15,7 +15,7 @@ export const SHOW_CHART_KEY = "show_chart";
 const initialState :SwapState ={
   showChart: false,
   from: TONCOIN,
-  to: null,
+  to: USDT,
   inputs:{
     from:0,
     to:0

@@ -2,6 +2,7 @@ import React from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
 import { selectInfo } from "../../redux/reducers/info";
+import { currencyFormatter } from "../../utils/numberUtils";
 import styles from "./index.module.scss";
 
 export default function Chart() {
@@ -37,11 +38,6 @@ export default function Chart() {
   </div>;
 }
 
-const currencyFormatter = Intl.NumberFormat("en-US", {
-  style:"currency",
-  currency:"USD"
-});
-
 function CustomTooltip({ active, payload, label }:Partial<{active:boolean, payload:any[], label:number}>) {
   const formatLabel = (value:number) => {
     const date = new Date(value);
@@ -53,7 +49,6 @@ function CustomTooltip({ active, payload, label }:Partial<{active:boolean, paylo
       <div className={styles.chartTooltip}>
         <span>{formatLabel(label??0)}</span>
         <br/>
-        {/* <span>${abbreviateNumber(payload[0].value)}</span> */}
         <span>{currencyFormatter.format(payload[0].value)}</span>
       </div>
     );

@@ -1,14 +1,14 @@
 import React from "react";
-import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
 import { selectInfo } from "../../redux/reducers/info";
 import { currencyFormatter } from "../../utils/numberUtils";
 import styles from "./index.module.scss";
 
-export default function Chart() {
-  const { overview:{ volume } } = useAppSelector(selectInfo);
+export default function LiquidityChart() {
+  const { poolCharts:{ liquidity } } = useAppSelector(selectInfo);
 
-  if (!volume) {
+  if (!liquidity) {
     return null;
   }
 
@@ -17,18 +17,23 @@ export default function Chart() {
       width="100%"
       height={175}
       className={styles.chartContainer}>
-      <BarChart data={volume.ticks}>
-        <Tooltip
-          cursor={false}
-          content={<CustomTooltip />}
-        />
-        <Bar
-          barSize={2}
+      <AreaChart data={liquidity.ticks}>
+        <defs>
+          <linearGradient id="colorGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#0088CC" stopOpacity={0.27}/>
+            <stop offset="100%" stopColor="#0088CC" stopOpacity={0}/>
+          </linearGradient>
+        </defs>
+        <Tooltip content={<CustomTooltip />}/>
+        <Area
+          type="monotone"
           dataKey="value"
-          fill="#0088CC"
-          radius={[1,1,1,1]}
+          stroke="#0088CC"
+          strokeWidth="3px"
+          fillOpacity={1}
+          fill={"url(#colorGrad)"}
         />
-      </BarChart>
+      </AreaChart>
     </ResponsiveContainer>
   </div>;
 }

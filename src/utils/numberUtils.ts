@@ -21,3 +21,8 @@ export const abbreviateNumber = (num:number) =>{
 
   return scaled.toFixed(1) + suffix;
 };
+
+export const currencyFormatter = Intl.NumberFormat("en-US", {
+  style:"currency",
+  currency:"USD"
+});

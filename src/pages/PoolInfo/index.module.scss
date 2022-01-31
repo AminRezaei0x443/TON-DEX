@@ -1,10 +1,61 @@
 @import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
 
 .content {
   display: flex;
   flex-flow: column nowrap;
   gap: 48px;
   padding: 0 200px 50px;
+}
+
+.information {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1.5rem;
+  color: $primary-dark-color;
+
+  h3 {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    font-size: 1.875rem;
+    margin: 0;
+
+    img {
+      max-width: 3rem;
+      min-width: 3rem;
+      max-height: 3rem;
+      min-height: 3rem;
+
+      @include round-image;
+    }
+
+    span {
+      margin-left: 10px;
+    }
+  }
+
+  p {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin: 0;
+    gap: 0.5rem;
+
+    img {
+      max-width: 2rem;
+      min-width: 2rem;
+      max-height: 2rem;
+      min-height: 2rem;
+
+      @include round-image;
+    }
+
+    span {
+      font-size: 20px;
+      font-weight: 700;
+    }
+  }
 }
 
 .section {

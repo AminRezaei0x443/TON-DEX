@@ -193,3 +193,8 @@ export const removeApproval = async (address: string, token1: string, token2: st
   await delay(100);
   return true;
 };
+
+export const getPool = async (id: string): Promise<Pool|null> => {
+  await delay(100);
+  return _pools.get(id) ?? null;
+};

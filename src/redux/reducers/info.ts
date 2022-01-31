@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { liquidityChanges, volumeInfo } from "../../api/info";
-import { listPools, Pool } from "../../api/pool";
+import { getPool, listPools, Pool } from "../../api/pool";
 import { RootState } from "../store";
-import { InfoState, TopPoolSort } from "../types/info";
+import { InfoState, PoolChartType, TopPoolSort } from "../types/info";
 
 const initialState :InfoState ={
   overview: {
@@ -13,6 +13,12 @@ const initialState :InfoState ={
   topPoolsSort:{
     key:"liquidity",
     ascending:true
+  },
+  pool:null,
+  poolChartType:"liquidity",
+  poolCharts: {
+    volume:null,
+    liquidity:null
   }
 };
 
@@ -20,6 +26,13 @@ export const retrieveLiquiditiesOverview = createAsyncThunk(
   "info/retrieveLiquiditiesOverview",
   async () => {
     return await liquidityChanges();
+  }
+);
+
+export const retrievePoolInfo = createAsyncThunk(
+  "info/retrievePoolInfo",
+  async (address:string) => {
+    return await getPool(address);
   }
 );
 
@@ -34,6 +47,16 @@ export const retrieveTopPools = createAsyncThunk(
   "info/retrieveTopPools",
   async () => {
     return await listPools(0);
+  }
+);
+
+export const retrievePoolCharts = createAsyncThunk(
+  "info/retrievePoolCharts",
+  async (address:string) => {
+    return {
+      liquidity: await liquidityChanges(address),
+      volume: await volumeInfo(address)
+    };
   }
 );
 
@@ -52,6 +75,7 @@ const sortTopPools = (list: Pool[], { key,ascending }:TopPoolSort) => {
   });
 };
 
+
 const handleTopPoolsSort = (state:InfoState, { payload:{ key,ascending } }:PayloadAction<Partial<TopPoolSort>>) => {
   const shouldUpdate = key !== state.topPoolsSort.key || ascending !== state.topPoolsSort.ascending;
 
@@ -67,29 +91,45 @@ const handleTopPoolsSort = (state:InfoState, { payload:{ key,ascending } }:Paylo
   }
 };
 
+
+const handlePoolChartType = (state:InfoState, { payload }:PayloadAction<PoolChartType>) => {
+  state.poolChartType = payload;
+};
+
 export const infoSlice = createSlice({
   initialState,
   name:"info",
   reducers:{
-    topPoolsSort:handleTopPoolsSort
+    topPoolsSort:handleTopPoolsSort,
+    poolChartType:handlePoolChartType
   },
   extraReducers: (builder) => {
     builder.addCase(retrieveLiquiditiesOverview.fulfilled, (state, { payload }) => {
       state.overview.liquidity = payload;
     });
+
     builder.addCase(retrieveVolumeOverview.fulfilled, (state, { payload }) => {
       state.overview.volume = payload;
     });
+
     builder.addCase(retrieveTopPools.fulfilled, (state, { payload }) => {
       state.topPoolsSort.key = "liquidity";
       state.topPoolsSort.ascending = true;
       state.topPools = sortTopPools(payload, state.topPoolsSort);
     });
+
+    builder.addCase(retrievePoolInfo.fulfilled, (state, { payload }) => {
+      state.pool = payload;
+    });
+
+    builder.addCase(retrievePoolCharts.fulfilled, (state, { payload }) => {
+      state.poolCharts = payload;
+    });
   }
 });
 
 
-export const { topPoolsSort } = infoSlice.actions;
+export const { topPoolsSort,poolChartType } = infoSlice.actions;
 
 export const selectInfo = (state: RootState): InfoState => state.info;
 

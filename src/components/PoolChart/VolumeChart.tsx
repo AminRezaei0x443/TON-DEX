@@ -5,14 +5,14 @@ import { selectInfo } from "../../redux/reducers/info";
 import { currencyFormatter } from "../../utils/numberUtils";
 import styles from "./index.module.scss";
 
-export default function Chart() {
-  const { overview:{ volume } } = useAppSelector(selectInfo);
+export default function VolumeChart() {
+  const { poolCharts:{ volume } } = useAppSelector(selectInfo);
 
   if (!volume) {
     return null;
   }
 
-  return <div className={styles.chart}>
+  return <div className={styles.volumeChart}>
     <ResponsiveContainer
       width="100%"
       height={175}
@@ -32,7 +32,6 @@ export default function Chart() {
     </ResponsiveContainer>
   </div>;
 }
-
 
 function CustomTooltip({ active, payload, label }:Partial<{active:boolean, payload:any[], label:number}>) {
   const formatLabel = (value:number) => {

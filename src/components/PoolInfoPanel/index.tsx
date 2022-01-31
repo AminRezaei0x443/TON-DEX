@@ -20,32 +20,38 @@ export default function PoolInfoPanel() {
 
 function LiquiditySection() {
   const { pool } = useAppSelector(selectInfo);
+  const increasing = (pool?.info?.liquidityChange ?? 0) >= 0;
+  const value = Math.abs((pool?.info?.liquidityChange ?? 0));
   return (<div className={styles.section}>
     <h4>Liquidity</h4>
     <h3>${abbreviateNumber(pool?.info?.liquidity ?? 0)}</h3>
     <div
       className={cn({
         [styles.delta]:true,
-        [styles.decr]:true
+        [styles.incr]: increasing,
+        [styles.decr]: !increasing
       })}>
       <Arrow />
-      {"2.57%"}
+      {value.toFixed(3)}%
     </div>
   </div>);
 }
 
 function VolumeSection() {
   const { pool } = useAppSelector(selectInfo);
+  const increasing = (pool?.info?.volumeChange ?? 0) >= 0;
+  const value = Math.abs((pool?.info?.volumeChange ?? 0));
   return (<div className={styles.section}>
     <h4>Volume</h4>
     <h3>${abbreviateNumber(pool?.info?.volume24H ?? 0)}</h3>
     <div
       className={cn({
         [styles.delta]:true,
-        [styles.incr]:true
+        [styles.incr]: increasing,
+        [styles.decr]: !increasing
       })}>
       <Arrow />
-      {"3.24%"}
+      {value.toFixed(3)}%
     </div>
   </div>);
 }

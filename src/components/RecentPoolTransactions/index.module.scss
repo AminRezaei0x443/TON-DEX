@@ -1,0 +1,83 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
+@import "../../assets/styles/constants";
+
+.panel {
+  border: solid 2px $border-color;
+  border-radius: $border-radius;
+  padding: 2rem;
+  background-color: white;
+
+  hr {
+    border: none;
+    border-top: 1px solid $border-color;
+    margin: 1.5rem 0;
+  }
+}
+
+$table-template-columns: 2fr repeat(5, 1fr);
+$table-padding: 0 0.5rem;
+$table-column-gap: 0;
+
+.header {
+  display: grid;
+  grid-template-columns: $table-template-columns;
+  align-items: center;
+  padding: $table-padding;
+  column-gap: $table-column-gap;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: $primary-dark-color;
+
+  span {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .columnHead {
+    text-align: end;
+  }
+
+  .types {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.25rem;
+
+    .transactionType {
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+
+      &Selected {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.list {
+  display: grid;
+  grid-template-columns: $table-template-columns;
+  align-items: center;
+  padding: $table-padding;
+  column-gap: $table-column-gap;
+  color: $primary-dark-color;
+  font-size: 1.125rem;
+  font-weight: 500;
+
+  span {
+    text-align: end;
+  }
+
+  .description {
+    color: $primary-color;
+    font-weight: 700;
+    text-align: start;
+  }
+
+  .account {
+    color: $primary-color;
+  }
+}

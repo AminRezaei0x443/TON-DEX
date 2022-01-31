@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PoolChart from "../../components/PoolChart";
 import PoolInfoPanel from "../../components/PoolInfoPanel";
-import TopPoolsList from "../../components/TopPoolsList";
+import RecentTransactions from "../../components/RecentPoolTransactions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { retrievePoolInfo, selectInfo } from "../../redux/reducers/info";
+import { retrievePoolInfo, retrievePoolTransactions, selectInfo } from "../../redux/reducers/info";
 import styles from "./index.module.scss";
 
 export default function PoolInfoPage() {
@@ -15,6 +15,7 @@ export default function PoolInfoPage() {
   useEffect(() => {
     if(address !== undefined) {
       dispatch(retrievePoolInfo(address));
+      dispatch(retrievePoolTransactions({ address, page:0 }));
     }
   }, [address, dispatch]);
 
@@ -25,6 +26,7 @@ export default function PoolInfoPage() {
   return (
     <div className={styles.content}>
       <Information/>
+      <Transactions/>
     </div>
   );
 }
@@ -51,9 +53,9 @@ function Information() {
   </div>;
 }
 
-function TopPools() {
-  return <div className={styles.section}>
-    <h3>Top Pools</h3>
-    <TopPoolsList />
+function Transactions() {
+  return <div className={styles.transactions}>
+    <h3>Recent Transactions</h3>
+    <RecentTransactions />
   </div>;
 }

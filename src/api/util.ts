@@ -23,3 +23,11 @@ export const generateAddress = () => {
     addr += getRandomCharFromString(_addr_allowed.lowers + _addr_allowed.uppers + _addr_allowed.numbers);
   return addr;
 };
+
+export const generateHash = () => {
+  let hash = "";
+  hash += getRandomCharFromString(_addr_allowed.lowers);
+  for (let i = 0; i < 63; i++)
+    hash += getRandomCharFromString(_addr_allowed.lowers + _addr_allowed.numbers);
+  return hash;
+};

@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { liquidityChanges, volumeInfo } from "../../api/info";
-import { getPool, listPools, Pool } from "../../api/pool";
+import { getPool, listPools, Pool, poolTransactions } from "../../api/pool";
 import { RootState } from "../store";
-import { InfoState, PoolChartType, TopPoolSort } from "../types/info";
+import { InfoState, PoolChartType, TopPoolSort, TransactionType } from "../types/info";
 
 const initialState :InfoState ={
   overview: {
@@ -19,6 +19,10 @@ const initialState :InfoState ={
   poolCharts: {
     volume:null,
     liquidity:null
+  },
+  transactions:{
+    type: null,
+    list: []
   }
 };
 
@@ -60,6 +64,13 @@ export const retrievePoolCharts = createAsyncThunk(
   }
 );
 
+export const retrievePoolTransactions = createAsyncThunk(
+  "info/retrievePoolTransactions",
+  async ({ address,page }:{ address:string, page:number }) => {
+    return await poolTransactions(address, page);
+  }
+);
+
 const sortTopPools = (list: Pool[], { key,ascending }:TopPoolSort) => {
   const mult = !ascending ? -1 : 1;
   return list.sort((a, b) => {
@@ -95,13 +106,17 @@ const handleTopPoolsSort = (state:InfoState, { payload:{ key,ascending } }:Paylo
 const handlePoolChartType = (state:InfoState, { payload }:PayloadAction<PoolChartType>) => {
   state.poolChartType = payload;
 };
+const handlePoolTransactionType = (state:InfoState, { payload }:PayloadAction<TransactionType|null>) => {
+  state.transactions.type = payload;
+};
 
 export const infoSlice = createSlice({
   initialState,
   name:"info",
   reducers:{
     topPoolsSort:handleTopPoolsSort,
-    poolChartType:handlePoolChartType
+    poolChartType:handlePoolChartType,
+    poolTransactionType:handlePoolTransactionType
   },
   extraReducers: (builder) => {
     builder.addCase(retrieveLiquiditiesOverview.fulfilled, (state, { payload }) => {
@@ -129,11 +144,14 @@ export const infoSlice = createSlice({
     builder.addCase(retrievePoolCharts.fulfilled, (state, { payload }) => {
       state.poolCharts = payload;
     });
+    builder.addCase(retrievePoolTransactions.fulfilled, (state, { payload }) => {
+      state.transactions.list.push(...payload);
+    });
   }
 });
 
 
-export const { topPoolsSort,poolChartType } = infoSlice.actions;
+export const { topPoolsSort,poolChartType,poolTransactionType } = infoSlice.actions;
 
 export const selectInfo = (state: RootState): InfoState => state.info;
 

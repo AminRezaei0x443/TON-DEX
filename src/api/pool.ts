@@ -1,6 +1,6 @@
 import { conversionRate } from "./swap";
 import { listTokens, Token, tokenInfo } from "./tokens";
-import { delay, generateAddress } from "./util";
+import { delay, generateAddress, generateHash } from "./util";
 
 export interface Pool{
     address: string;
@@ -212,4 +212,51 @@ export const removeApproval = async (address: string, token1: string, token2: st
 export const getPool = async (id: string): Promise<Pool|null> => {
   await delay(100);
   return _pools.get(id) ?? null;
+};
+
+export enum TransactionType{
+  SWAP="Swap",
+  ADD="Add",
+  REMOVE="Remove"
+}
+
+export interface PoolTransaction{
+  id: string;
+  type: TransactionType;
+  totalValue: number;
+  token1Amount: number;
+  token2Amount: number;
+  token1: Token;
+  token2: Token;
+  account: string;
+  time: number;
+}
+
+
+export const poolTransactions = async (id: string, page: number): Promise<PoolTransaction[]> => {
+  await delay(100);
+  const pool = _pools.get(id);
+  if(!pool || !pool.token1 || !pool.token2){
+    return [];
+  }
+
+  let transactions: PoolTransaction[] = [];
+  let allTypes: TransactionType[] = [TransactionType.ADD, TransactionType.REMOVE, TransactionType.SWAP];
+  let getRandomType = () => allTypes[Math.floor(Math.random() * allTypes.length)];
+
+  for(let i = 0; i < 10; i++){
+    const time = new Date().getTime() - (Math.random()*10*60*30*1000);
+    transactions.push({
+      account: generateAddress(),
+      id: generateHash(),
+      time,
+      token1Amount: Math.random() * 100,
+      token2Amount: Math.random() * 100,
+      token1:pool.token1,
+      token2:pool.token2,
+      totalValue: Math.random() * 1000,
+      type: getRandomType(),
+    });
+  }
+  return transactions;
 };

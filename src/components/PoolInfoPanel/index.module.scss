@@ -8,8 +8,9 @@
   display: flex;
   flex-flow: column nowrap;
   background-color: white;
-  min-width: 180px;
-  max-width: 200px;
+
+  // min-width: 180px;
+  // max-width: 200px;
   width: 20%;
   overflow: hidden;
   justify-content: space-between;
@@ -89,5 +90,11 @@
       flex: 1;
       font-weight: 700;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
   }
 }

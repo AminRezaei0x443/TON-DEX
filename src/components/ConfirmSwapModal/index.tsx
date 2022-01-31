@@ -20,6 +20,9 @@ export default function ConfirmSwapModal() {
     return null;
   }
 
+  const handleConfirmClick = () => {
+  };
+
   return <div
     className={styles.container}
     onClick={preventClickThroughs}>
@@ -38,7 +41,8 @@ export default function ConfirmSwapModal() {
     <TransactionInfo />
     <Button
       buttonType="primaryLarge"
-      title="Confirm Swap"/>
+      title="Confirm Swap"
+      onClick={handleConfirmClick}/>
   </div>;
 }
 

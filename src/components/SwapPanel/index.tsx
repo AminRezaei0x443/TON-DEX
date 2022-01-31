@@ -38,6 +38,8 @@ export default function SwapPanel() {
   const handleSelectFromToken = () => handleSelectToken("from");
   const handleSelectToToken = () => handleSelectToken("to");
 
+  const confirmDisabled = connected && (swapState.from === null || swapState.to === null) || (swapState.inputs.from === 0 || swapState.inputs.to === 0);
+
   useInputBalanceEffect(swapState.from, swapState.to, syncTokenBalances);
 
 
@@ -70,7 +72,8 @@ export default function SwapPanel() {
       <Button
         buttonType="primaryLarge"
         title={connected?"Swap": "Connect To Wallet"}
-        onClick={handleSwap}/>
+        onClick={handleSwap}
+        disabled={confirmDisabled}/>
     </div>
   );
 }

@@ -4,13 +4,11 @@ import React, { SVGProps } from "react";
 export default function Trending({ ...props }: SVGProps<SVGSVGElement> ) {
   return <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={34.828}
-    height={20.283}
+    viewBox="0 0 34.828 20.283"
     {...props}
   >
     <g
       fill="none"
-      stroke="#08c"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}

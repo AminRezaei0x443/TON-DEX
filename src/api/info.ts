@@ -14,8 +14,8 @@ interface ValueTick{
 }
 
 export interface Prices {
-    token1: Token|null;
-    token2: Token|null;
+    token1?: Token;
+    token2?: Token;
     ticks: ValueTick[];
 };
 
@@ -29,7 +29,7 @@ export const historicalPrices = async (token1: string, token2: string, interval:
   await delay(100);
   let t1 = await tokenInfo(token1);
   let t2 = await tokenInfo(token1);
-  let { fwd, bwd } = await conversionRate(token1, token2);
+  let { fwd } = await conversionRate(token1, token2);
   let ticks: ValueTick[] = [{
     time: new Date().getTime(),
     value: fwd,
@@ -53,12 +53,12 @@ export const historicalPrices = async (token1: string, token2: string, interval:
   };
 };
 
-interface LiquidityInfo{
+export interface LiquidityInfo{
     current: number;
     ticks: ValueTick[];
 }
 
-export const liquidityChanges = async (): Promise<LiquidityInfo> => {
+export const liquidityChanges = async (poolAddress:string = ""): Promise<LiquidityInfo> => {
   await delay(100);
   let current = 602.132455 * 1e6;
   let ticks: ValueTick[] = [{
@@ -83,12 +83,12 @@ export const liquidityChanges = async (): Promise<LiquidityInfo> => {
 };
 
 
-interface VolumeInfo{
+export interface VolumeInfo{
     current: number;
     ticks: ValueTick[];
 }
 
-export const volumeInfo = async (): Promise<VolumeInfo> => {
+export const volumeInfo = async (poolAddress:string = ""): Promise<VolumeInfo> => {
   await delay(100);
   let current = 81.267915 * 1e6;
   let ticks: ValueTick[] = [{

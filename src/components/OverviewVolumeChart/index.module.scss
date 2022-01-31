@@ -1,0 +1,74 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
+@import "../../assets/styles/constants";
+
+.container {
+  border: solid 2px $border-color;
+  border-radius: $border-radius;
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: white;
+  gap: 10px;
+  min-width: 300px;
+  width: 45%;
+  overflow: hidden;
+}
+
+.header {
+  padding: 2rem 3rem 0;
+  display: flex;
+  flex-flow: column wrap;
+  color: $primary-dark-color;
+
+  h5 {
+    margin: 0;
+    font-weight: 900;
+  }
+
+  h1 {
+    margin: 6px 0;
+    font-weight: 900;
+  }
+
+  span {
+    opacity: 0.5;
+    font-weight: 500;
+  }
+}
+
+.title {
+  display: inline-flex;
+  gap: 10px;
+  flex-flow: row nowrap;
+  align-items: baseline;
+
+  img {
+    @include round-image;
+
+    max-width: 2.5rem;
+    min-width: 2.5rem;
+    max-height: 2.5rem;
+    min-height: 2.5rem;
+  }
+
+  svg {
+    @include hover-darken;
+  }
+
+  span {
+    font-size: 1rem;
+    font-weight: 900;
+    color: $primary-dark-color;
+  }
+}
+
+.chartContainer {
+  @extend %chart-container;
+}
+
+.chart {
+  @extend %chart;
+
+  width: 80%;
+  margin: 0 auto 2rem;
+}

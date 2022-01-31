@@ -39,6 +39,10 @@
     gap: 0.5rem;
 
     svg {
+      width: 2rem;
+      height: 2rem;
+      stroke: $primary-color;
+
       @include hover-lighten;
     }
   }
@@ -76,7 +80,7 @@
 .info {
   display: flex;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
   margin: 1rem 0;
   align-content: center;
   gap: 10px;

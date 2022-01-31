@@ -2,7 +2,7 @@ import React from "react";
 import { Token } from "../../api/tokens";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { showModal } from "../../redux/reducers/modals";
-import { selectSwap } from "../../redux/reducers/swap";
+import { confirmSwap, selectSwap } from "../../redux/reducers/swap";
 import Button from "../Button";
 import Arrow from "../icons/Arrow";
 import Close from "../icons/Close";
@@ -19,6 +19,17 @@ export default function ConfirmSwapModal() {
   if(swapState.from === null || swapState.to === null) {
     return null;
   }
+
+  const handleConfirmClick = () => {
+
+    if(swapState.from === null || swapState.to === null) return;
+
+    dispatch(confirmSwap({
+      from:swapState.from,
+      to:swapState.to,
+      value: swapState.inputs.from
+    }));
+  };
 
   return <div
     className={styles.container}
@@ -38,7 +49,8 @@ export default function ConfirmSwapModal() {
     <TransactionInfo />
     <Button
       buttonType="primaryLarge"
-      title="Confirm Swap"/>
+      title="Confirm Swap"
+      onClick={handleConfirmClick}/>
   </div>;
 }
 

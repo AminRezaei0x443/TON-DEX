@@ -86,26 +86,16 @@
   .timeSpanSelector {
     flex: 1;
     display: inline-flex;
-    justify-content: end;
+    justify-content: flex-end;
   }
+}
+
+.chartContainer {
+  @extend %chart-container;
 }
 
 .chart {
+  @extend %chart;
+
   align-self: flex-end;
-  height: 100%;
-  width: 100%;
-
-  &Container {
-    width: 100%;
-    padding: 0;
-  }
-}
-
-.chartTooltip {
-  background-color: $primary-dark-color;
-  border-radius: 30px;
-  color: white;
-  font-weight: 700;
-  font-size: 0.75rem;
-  padding: 0.75rem 1rem;
 }

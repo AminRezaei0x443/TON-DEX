@@ -2,10 +2,11 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { connect, selectAccount } from "../../redux/reducers/account";
 import { showModal } from "../../redux/reducers/modals";
-import { changeInput, selectioModal, selectSwap, switchInputs } from "../../redux/reducers/swap";
+import { changeInput, selectionModal, selectSwap, switchInputs, syncTokenBalances } from "../../redux/reducers/swap";
+import { useInputBalanceEffect } from "../../utils/hooks";
 import Button from "../Button";
 import Info from "../icons/Info";
-import SwapInput from "../SwapInput";
+import TokenInput from "../TokenInput";
 import Header from "./Header";
 import styles from "./index.module.scss";
 import SwitchButton from "./SwitchButton";
@@ -31,23 +32,30 @@ export default function SwapPanel() {
   const handleToChange = (value:number) => dispatch(changeInput({ key:"to",value }));
 
   const handleSelectToken = (key:"from"|"to") => {
-    dispatch(selectioModal(key));
+    dispatch(selectionModal(key));
     dispatch(showModal("swap-selection"));
   };
   const handleSelectFromToken = () => handleSelectToken("from");
   const handleSelectToToken = () => handleSelectToken("to");
 
+  const confirmDisabled = connected &&
+                        ((swapState.from === null || swapState.to === null) ||
+                         (swapState.inputs.from === 0 || swapState.inputs.to === 0));
+
+  useInputBalanceEffect(swapState.from, swapState.to, syncTokenBalances);
+
+
   return (
     <div className={styles.panel}>
       <Header/>
-      <SwapInput
+      <TokenInput
         label="From"
         value={swapState.inputs.from}
         onChange={handleFromChange}
         token={swapState.from}
         onSelectToken={handleSelectFromToken}/>
       <SwitchButton onClick={handleSwitch} />
-      <SwapInput
+      <TokenInput
         label="To"
         value={swapState.inputs.to}
         onChange={handleToChange}
@@ -66,7 +74,8 @@ export default function SwapPanel() {
       <Button
         buttonType="primaryLarge"
         title={connected?"Swap": "Connect To Wallet"}
-        onClick={handleSwap}/>
+        onClick={handleSwap}
+        disabled={confirmDisabled}/>
     </div>
   );
 }

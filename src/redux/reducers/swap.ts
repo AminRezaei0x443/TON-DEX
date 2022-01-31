@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DataInterval, historicalPrices } from "../../api/info";
-import { conversionRate as getConversionRate } from "../../api/swap";
-import { listTokens, Token, TONCOIN, USDT } from "../../api/tokens";
+import { confirmSwap as _confirmSwap, conversionRate as getConversionRate } from "../../api/swap";
+import { Token, tokenBalance, TONCOIN, USDT } from "../../api/tokens";
 import { BN, cleanUpDecimal } from "../../utils/numberUtils";
 import { RootState } from "../store";
 import { SwapState } from "../types/swap";
+import { TokenBalanced } from "../types/tokens";
+import { showModal } from "./modals";
 import { notification } from "./notifications";
 
 export const SHOW_CHART_KEY = "show_chart";
@@ -13,13 +15,11 @@ export const SHOW_CHART_KEY = "show_chart";
 const initialState :SwapState ={
   showChart: false,
   from: TONCOIN,
-  to: null,
+  to: USDT,
   inputs:{
     from:0,
     to:0
   },
-  tokens: [],
-  displayList: [],
   selectionModal:"from",
   chartData: null,
   timespan: DataInterval.H24,
@@ -61,19 +61,16 @@ const handleToggleChart = (state:SwapState) => {
   window.localStorage.setItem(SHOW_CHART_KEY,`${newState}`);
 };
 
-export const retrieveTokens = createAsyncThunk(
-  "swap/retrieveTokens", async ()=>{
-    return await listTokens(-1);
-  });
 export const retrieveChart = createAsyncThunk(
   "swap/retrieveChart",
   async ({ address1, address2, interval }:{ address1:string; address2:string; interval:DataInterval }, thunkAPI) => {
     const res = await historicalPrices(address1,address2,interval);
     if (res === null){
-      thunkAPI.dispatch(notification({ message:"There was an error whilte fetching info!", type:"failure" }));
+      thunkAPI.dispatch(notification({ message:"There was an error while fetching info!", type:"failure" }));
     }
     return res;
   });
+
 export const conversionRate = createAsyncThunk(
   "swap/conversionRate",
   async ({ from,to }:{from:Token, to:Token }) => {
@@ -82,18 +79,46 @@ export const conversionRate = createAsyncThunk(
     return { rate: res.fwd, usdt: usdtRes.fwd };
   });
 
-const handleFilterTokens = (state:SwapState, { payload }:PayloadAction<string>) => {
-  console.log(payload);
 
-  if (payload.trim().length === 0){
-    state.displayList = state.tokens;
-  }else{
-    state.displayList = state.tokens.filter(token=>
-      token.name.toLowerCase().includes(payload) ||
-      token.symbol.toLowerCase().includes(payload) ||
-      token.address.includes(payload));
-  }
-};
+
+export const confirmSwap = createAsyncThunk(
+  "swap/confirmSwap",
+  async ({ from,to,value }:{ from:TokenBalanced, to:TokenBalanced, value: number }, thunkAPI) => {
+    const res = await _confirmSwap({
+      token1:from.address,
+      token2:to.address,
+      value,
+    });
+
+    if(!res.successful){
+      thunkAPI.dispatch(notification({
+        message: "There was a problem swapping the tokens!",
+        type:"failure",
+      }));
+    }else{
+      thunkAPI.dispatch(notification({
+        message: `Successfully swapped ${value.toFixed(3)} ${from.symbol} for ${res.swapValue.toFixed(3)} ${to.symbol}!`,
+        type:"success",
+      }));
+    }
+
+    thunkAPI.dispatch(showModal(null));
+
+    return res;
+  });
+
+export const syncTokenBalances = createAsyncThunk(
+  "swap/syncTokenBalances",
+  async ({ token1, token2, walletAddress }:{token1?:string, token2?:string ,walletAddress:string}) => {
+    let balance1 = 0 , balance2 = 0;
+    if(token1 !== undefined){
+      balance1 = await tokenBalance(token1, walletAddress);
+    }
+    if(token2 !== undefined){
+      balance2 = await tokenBalance(token2, walletAddress);
+    }
+    return { balance1, balance2 };
+  });
 
 const handleChangeToken = (state:SwapState, { payload }:PayloadAction<{key: "to"|"from", value: Token}>) => {
   state[payload.key] = payload.value;
@@ -112,15 +137,10 @@ export const swapSlice = createSlice({
     changeInput:handleChangeInput,
     changeToken:handleChangeToken,
     switchInputs:handleSwitchInputs,
-    filterTokens:handleFilterTokens,
-    selectioModal:handleSelectionModal,
+    selectionModal:handleSelectionModal,
     changeTimespan:handleTimespan
   },
   extraReducers: builder => {
-    builder.addCase(retrieveTokens.fulfilled, (state: SwapState, { payload }) => {
-      state.tokens = payload;
-      state.displayList = payload;
-    });
     builder.addCase(retrieveChart.fulfilled, (state: SwapState, { payload }) => {
       state.chartData = payload;
 
@@ -135,11 +155,28 @@ export const swapSlice = createSlice({
         percent: `${diff.isPositive()?"+":"-"}%${percent.abs().toFixed(2)}`,
       };
     });
+
     builder.addCase(conversionRate.fulfilled, (state: SwapState, { payload }) => {
       state.conversionRate = cleanUpDecimal(payload.rate);
       state.usdtRate = cleanUpDecimal(payload.usdt);
 
       state.inputs.to = state.conversionRate * state.inputs.from;
+    });
+
+    builder.addCase(syncTokenBalances.fulfilled, (state: SwapState, { payload }) => {
+      if(state.from !== null){
+        state.from.balance = payload.balance1;
+      }
+      if(state.to !== null){
+        state.to.balance = payload.balance2;
+      }
+    });
+
+    builder.addCase(confirmSwap.fulfilled, (state: SwapState, { payload }) => {
+      if(payload){
+        state.inputs.from = 0;
+        state.inputs.to = 0;
+      }
     });
   }
 });
@@ -149,9 +186,8 @@ export const { showChart,
   toggleChart,
   changeInput,
   switchInputs,
-  filterTokens,
   changeToken,
-  selectioModal,
+  selectionModal,
   changeTimespan } = swapSlice.actions;
 
 export const selectSwap = (state: RootState): SwapState => state.swap;

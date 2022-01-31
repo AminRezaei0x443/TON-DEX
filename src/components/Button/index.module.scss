@@ -16,10 +16,6 @@ $radius-large: 16px;
   @include hover-darken;
 }
 
-.loading {
-  @include disabled;
-}
-
 @keyframes loading-anim {
   to {
     clip-path: inset(0 -1ch 0 0);
@@ -29,6 +25,7 @@ $radius-large: 16px;
 %default {
   font-weight: 700;
   font-size: 1rem;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 %primary {
@@ -89,4 +86,14 @@ $radius-large: 16px;
 .secondarySmall {
   @extend %secondary;
   @extend %small;
+}
+
+.disabled {
+  background-color: $border-color;
+  color: rgba($primary-dark-color, 0.45);
+  pointer-events: none;
+}
+
+.loading {
+  @include disabled;
 }

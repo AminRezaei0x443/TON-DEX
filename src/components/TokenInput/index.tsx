@@ -1,23 +1,31 @@
 import React from "react";
-import { Token } from "../../api/tokens";
+import { TokenBalanced } from "../../redux/types/tokens";
 import styles from "./index.module.scss";
 
 
 interface IProps {
     label: string;
     value: number;
-    token: Token|null;
+    token: TokenBalanced|null;
     onChange?: (value: number) => void;
     onSelectToken?: () => void;
+    showMax?: boolean;
 }
 
-export default function SwapInput({ label, onChange, value, token,onSelectToken }:IProps) {
+export default function TokenInput({ label, onChange, value, token,onSelectToken,showMax }:IProps) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     if (!!onChange && value.match(/^\d*(\.\d+)?$/g)){
       const returnValue = parseFloat(value);
       onChange(Number.isNaN(returnValue) ? 0 : returnValue);
+    }
+  };
+
+  const handleMaxClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    if(onChange && token?.balance){
+      onChange(token.balance);
     }
   };
 
@@ -40,7 +48,14 @@ export default function SwapInput({ label, onChange, value, token,onSelectToken 
           <span>{token !== null ? token.symbol: "Select Token"}</span>
         </div>
         <span className={styles.balance}>
-            Balance: <b>TODO</b>
+          {showMax && token?.balance ?
+            <small
+              className={styles.max}
+              onClick={handleMaxClick}>
+              MAX
+            </small>
+            :""}
+            Balance: <b>{token?.balance??0}</b>
         </span>
       </div>
     </div>

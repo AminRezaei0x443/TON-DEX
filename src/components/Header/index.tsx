@@ -25,15 +25,14 @@ export default function Header() {
 
   useEffect(() => {
     const pathName = location.pathname.slice(1);
-    if (pathName.startsWith("liquidity")){
+    if (pathName === ""){
+      setTab(0);
+    }else if (pathName.startsWith("liquidity")){
       setTab(1);
     }else if(pathName.startsWith("info")){
       setTab(2);
-    }else{
-      setTab(0);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.pathname]);
 
   const connected = walletState.walletAddress !== null;
 
@@ -71,7 +70,6 @@ export default function Header() {
       navigate("/");
       break;
     }
-    setTab(newTab);
   };
 
 

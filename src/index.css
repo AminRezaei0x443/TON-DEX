@@ -33,3 +33,30 @@ code {
 a {
   text-decoration: none;
 }
+
+img[alt] {
+  font-size: 0.5rem;
+}
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 136, 204, 40%);
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 136, 204, 60%);
+}
+
+/* END CUSTOM SCROLLBAR */

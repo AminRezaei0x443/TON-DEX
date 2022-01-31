@@ -1,4 +1,4 @@
-export type Modal = null|"swap-selection"|"swap-confirmation";
+export type Modal = null|"swap-selection"|"swap-confirmation"|"liquidity-selection"|"confirm-supply"|"confirm-remove";
 
 export interface ModalsState {
     shown: Modal;

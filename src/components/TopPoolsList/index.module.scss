@@ -15,7 +15,7 @@
   }
 }
 
-$table-template-columns: 30px 8fr repeat(3, 3fr);
+$table-template-columns: 30px 6fr repeat(3, 3fr);
 $table-padding: 0 0.5rem;
 $table-column-gap: 0.5rem;
 
@@ -40,6 +40,24 @@ $table-column-gap: 0.5rem;
     flex-flow: row nowrap;
     align-items: center;
     justify-content: flex-end;
+    gap: 4px;
+    cursor: pointer;
+
+    @include hover-lighten;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      stroke: $primary-dark-color;
+      transition: transform 0.2s;
+    }
+  }
+
+  .descending {
+    svg {
+      transition: transform 0.2s;
+      transform: rotate(-180deg);
+    }
   }
 }
 

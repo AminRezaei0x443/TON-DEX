@@ -1,5 +1,5 @@
 $primary-color: #08c;
-$primary-light-color: rgba(#08c, 0.15);
+$primary-light-color: mix($primary-color, white, 15%);
 $primary-dark-color: #303757;
 $toast-background-color: #303757;
 $toast-success-background-color: #303757;

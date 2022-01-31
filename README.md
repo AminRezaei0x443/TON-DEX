@@ -1,6 +1,11 @@
 # TON DEX Swap
 
-TON DEX Swap Front-End Contest
+Repository for implementation of TON DEX Frontend Contest. First, UI/UX is designed in Adobe XD according to brand assets and TON ecosystem's interfaces. Then, It is implemented with `React.js` + `Typescript` + `Redux` tech stack.
+
+Implemented Flows:
+- Swap, Swap Confirmation, Swap Settings
+- Liquidity Addition and Removals with confirmation modals
+- Global DEX info and pool infos.
 
 ## Available Scripts
 

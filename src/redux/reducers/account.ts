@@ -20,7 +20,7 @@ export const connect = createAsyncThunk("account/connect", async (_, thunkAPI) =
     }));
   }else{
     thunkAPI.dispatch(notification({
-      message:"Could not connect to wallet.",
+      message:"There was a problem connecting to the wallet!",
       type:"failure",
       timeout:NOTIFICATION_TIMEOUT
     }));

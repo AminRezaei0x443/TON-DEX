@@ -116,9 +116,11 @@ export const addLiquidity = async (token1: string, token2: string, value: number
   let share = await calculateShare(token1, token2, value);
   let rates = await conversionRate(token1, token2);
 
+
   let id1 = token1 + "_" + token2;
   let id2 = token2 + "_" + token1;
   if(!_tokens_to_pool_addr.has(id1) && !_tokens_to_pool_addr.has(id2)){
+
     let np: Pool = {
       address: generateAddress(),
       info: null,
@@ -132,6 +134,7 @@ export const addLiquidity = async (token1: string, token2: string, value: number
   }
 
   let pid = _tokens_to_pool_addr.get(id1);
+
 
   if(pid){
     let p = _pools.get(pid);
@@ -151,11 +154,15 @@ export const addLiquidity = async (token1: string, token2: string, value: number
         _user_positions = [..._user_positions.slice(0, ps),newPosition, ..._user_positions.slice(ps+1)];
 
       }else{
-        const rate = await conversionRate(token1, token2);
-        p.info = {
-          fwdRate: rate.fwd,
-          bwdRate: rate.bwd,
+
+        p = {
+          ...p,
+          info:{
+            fwdRate: rates.fwd,
+            bwdRate: rates.bwd,
+          }
         };
+
         const newPosition: PoolPositionInfo = {
           liquidityTokens: share.liquidityTokens,
           share: share.share,

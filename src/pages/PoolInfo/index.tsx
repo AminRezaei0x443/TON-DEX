@@ -9,12 +9,17 @@ import styles from "./index.module.scss";
 export default function PoolInfoPage() {
   const { address } = useParams();
   const dispatch = useAppDispatch();
+  const { pool } = useAppSelector(selectInfo);
 
   useEffect(() => {
     if(address !== undefined) {
       dispatch(retrievePoolInfo(address));
     }
   }, [address, dispatch]);
+
+  if(pool === null) {
+    return null;
+  }
 
   return (
     <div className={styles.content}>

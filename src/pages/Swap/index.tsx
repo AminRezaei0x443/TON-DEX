@@ -10,9 +10,8 @@ export default function SwapPage() {
   const swapState = useAppSelector(selectSwap);
   const dispatch = useAppDispatch();
 
-
   useEffect(()=>{
-    if (swapState.from!==null && swapState.to!==null){
+    if (swapState.from !== null && swapState.to!==null){
       dispatch(retrieveChart({
         address1:swapState.from.address,
         address2:swapState.to.address,

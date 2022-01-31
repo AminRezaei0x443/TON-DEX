@@ -55,7 +55,6 @@ export default function ConfirmSwapModal() {
 }
 
 function TransactionInfo() {
-  const swapState = useAppSelector(selectSwap);
 
   return <div className={styles.transactionInfo}>
     <label>Price</label>

@@ -79,7 +79,7 @@ export default function Header() {
         <Brand/>
       </Link>
       <div className={styles.tabsHolder}>
-      <Tab items={TAB_ITEMS} selected={tab} onChange={handleTabChange} className={styles.tabs}/>
+        <Tab items={TAB_ITEMS} selected={tab} onChange={handleTabChange} className={styles.tabs}/>
       </div>
       <Button
         title={buttonText()}

@@ -9,9 +9,10 @@
   flex-flow: column nowrap;
   background-color: white;
   gap: 10px;
-  min-width: 280px;
-  max-width: 1000px;
-  width: 70%;
+
+  // min-width: 280px;
+  // max-width: 1000px;
+  width: 60%;
   overflow: hidden;
 }
 
@@ -103,4 +104,10 @@ $border-radius: 35px;
   padding: 0.5rem 1rem;
   font-weight: 900;
   font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+  }
 }

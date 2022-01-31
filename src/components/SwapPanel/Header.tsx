@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { showModal } from "../../redux/reducers/modals";
 import { selectSwap, toggleChart } from "../../redux/reducers/swap";
 import Settings from "../icons/Settings";
 import Trending from "../icons/Trending";
@@ -13,6 +14,9 @@ export default function Header() {
     dispatch(toggleChart());
   };
 
+  const handleSettingsClick = () => {
+    dispatch(showModal("swap-settings"));
+  };
   const showChartIcon = swapState.from !== null && swapState.to!==null;
 
   return <div className={styles.header}>
@@ -21,7 +25,7 @@ export default function Header() {
       <span>Trade Tokens Easily In An Instant</span>
     </div>
     <div className={styles.actions}>
-      <Settings/>
+      <Settings onClick={handleSettingsClick}/>
       {showChartIcon ? <Trending onClick={handleChartClick}/>: null}
     </div>
   </div>;

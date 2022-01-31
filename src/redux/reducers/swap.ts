@@ -4,7 +4,7 @@ import { confirmSwap as _confirmSwap, conversionRate as getConversionRate } from
 import { Token, tokenBalance, TONCOIN, USDT } from "../../api/tokens";
 import { BN, cleanUpDecimal } from "../../utils/numberUtils";
 import { RootState } from "../store";
-import { SwapState } from "../types/swap";
+import { SwapSettings, SwapState } from "../types/swap";
 import { TokenBalanced } from "../types/tokens";
 import { showModal } from "./modals";
 import { notification } from "./notifications";
@@ -25,7 +25,13 @@ const initialState :SwapState ={
   timespan: DataInterval.H24,
   conversionRate: 0,
   usdtRate: 0,
-  chartDiff: { increasing: false, value:"0", percent:"0" }
+  chartDiff: { increasing: false, value:"0", percent:"0" },
+  settings:{
+    expertMode:false,
+    multihops:true,
+    txDeadline:20,
+    slippageTolerance:"_auto"
+  }
 };
 
 
@@ -128,6 +134,13 @@ const handleSelectionModal = (state:SwapState, { payload }:PayloadAction<"to"|"f
   state.selectionModal = payload;
 };
 
+const handleChangeSettings = (state:SwapState, { payload }:PayloadAction<Partial<SwapSettings>>) => {
+  state.settings = {
+    ...state.settings,
+    ...payload
+  };
+};
+
 export const swapSlice = createSlice({
   initialState,
   name:"swap",
@@ -138,7 +151,8 @@ export const swapSlice = createSlice({
     changeToken:handleChangeToken,
     switchInputs:handleSwitchInputs,
     selectionModal:handleSelectionModal,
-    changeTimespan:handleTimespan
+    changeTimespan:handleTimespan,
+    changeSettings:handleChangeSettings
   },
   extraReducers: builder => {
     builder.addCase(retrieveChart.fulfilled, (state: SwapState, { payload }) => {
@@ -182,13 +196,16 @@ export const swapSlice = createSlice({
 });
 
 
-export const { showChart,
+export const {
+  showChart,
   toggleChart,
   changeInput,
   switchInputs,
   changeToken,
   selectionModal,
-  changeTimespan } = swapSlice.actions;
+  changeTimespan,
+  changeSettings
+} = swapSlice.actions;
 
 export const selectSwap = (state: RootState): SwapState => state.swap;
 

@@ -9,6 +9,7 @@ import ConfirmAddLiquidity from "../ConfirmAddLiquidity";
 import ConfirmRemoveLiquidity from "../ConfirmRemoveLiquidity";
 import ConfirmSwapModal from "../ConfirmSwapModal";
 import SelectionModal from "../SelectionModal";
+import SwapSettingsModal from "../SwapSettingsModal";
 import styles from "./index.module.scss";
 
 export default function Modals() {
@@ -50,7 +51,9 @@ export default function Modals() {
                 <ConfirmAddLiquidity/>
                 : modalsState.shown === "confirm-remove" ?
                   <ConfirmRemoveLiquidity/>
-                  : null
+                  : modalsState.shown === "swap-settings" ?
+                    <SwapSettingsModal/>
+                    : null
       }
     </div>
   </CSSTransition>;

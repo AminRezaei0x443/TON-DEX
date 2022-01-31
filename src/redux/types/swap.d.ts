@@ -7,6 +7,14 @@ export type DifferenceData = {
     percent:string;
 }
 
+export interface SwapSettings {
+    slippageTolerance: SlippageValue;
+    txDeadline: number;
+    expertMode: boolean;
+    multihops: boolean;
+}
+
+export type SlippageValue = string|"_auto"|"_0.1%"|"_0.5%";
 
 export interface SwapState {
     showChart: boolean;
@@ -22,4 +30,5 @@ export interface SwapState {
     chartData: Prices|null;
     timespan: DataInterval;
     chartDiff: DifferenceData;
+    settings: SwapSettings;
 }

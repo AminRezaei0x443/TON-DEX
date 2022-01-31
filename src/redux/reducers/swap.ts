@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DataInterval, historicalPrices } from "../../api/info";
-import { conversionRate as getConversionRate } from "../../api/swap";
+import { confirmSwap as _confirmSwap, conversionRate as getConversionRate } from "../../api/swap";
 import { Token, tokenBalance, TONCOIN, USDT } from "../../api/tokens";
 import { BN, cleanUpDecimal } from "../../utils/numberUtils";
 import { RootState } from "../store";
 import { SwapState } from "../types/swap";
+import { TokenBalanced } from "../types/tokens";
+import { showModal } from "./modals";
 import { notification } from "./notifications";
 
 export const SHOW_CHART_KEY = "show_chart";
@@ -77,6 +79,34 @@ export const conversionRate = createAsyncThunk(
     return { rate: res.fwd, usdt: usdtRes.fwd };
   });
 
+
+
+export const confirmSwap = createAsyncThunk(
+  "swap/confirmSwap",
+  async ({ from,to,value }:{ from:TokenBalanced, to:TokenBalanced, value: number }, thunkAPI) => {
+    const res = _confirmSwap({
+      token1:from.address,
+      token2:to.address,
+      value,
+    });
+
+    if(!res){
+      thunkAPI.dispatch(notification({
+        message: "There was a problem!",
+        type:"failure",
+      }));
+    }else{
+      thunkAPI.dispatch(notification({
+        message: "Successfully swapped!?",
+        type:"success",
+      }));
+    }
+
+    thunkAPI.dispatch(showModal(null));
+
+    return res;
+  });
+
 export const syncTokenBalances = createAsyncThunk(
   "swap/syncTokenBalances",
   async ({ token1, token2, walletAddress }:{token1?:string, token2?:string ,walletAddress:string}) => {
@@ -139,6 +169,13 @@ export const swapSlice = createSlice({
       }
       if(state.to !== null){
         state.to.balance = payload.balance2;
+      }
+    });
+
+    builder.addCase(confirmSwap.fulfilled, (state: SwapState, { payload }) => {
+      if(payload){
+        state.inputs.from = 0;
+        state.inputs.to = 0;
       }
     });
   }

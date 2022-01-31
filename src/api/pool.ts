@@ -2,7 +2,7 @@ import { conversionRate } from "./swap";
 import { listTokens, Token, tokenInfo } from "./tokens";
 import { delay, generateAddress } from "./util";
 
-interface Pool{
+export interface Pool{
     address: string;
     token1?: Token;
     token2?: Token;
@@ -30,7 +30,7 @@ export const listPools = async (page: number, loadInfo: boolean = true): Promise
     tokens = tokens.slice(0, o);
     for(let i = 0; i < tokens.length; i++){
       let t1 = tokens[i];
-      for(let j = i; i < tokens.length; j++){
+      for(let j = i+1; j < tokens.length; j++){
         let t2 = tokens[j];
         let id1 = t1.address + "_" + t2.address;
         let id2 = t2.address + "_" + t1.address;

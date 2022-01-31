@@ -1,0 +1,88 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/mixins";
+@import "../../assets/styles/constants";
+
+.panel {
+  border: solid 2px $border-color;
+  border-radius: $border-radius;
+  padding: 2rem;
+  background-color: white;
+
+  hr {
+    border: none;
+    border-top: 1px solid $border-color;
+    margin: 1.5rem 0;
+  }
+}
+
+$table-template-columns: 30px 8fr repeat(3, 3fr);
+$table-padding: 0 0.5rem;
+$table-column-gap: 0.5rem;
+
+.header {
+  display: grid;
+  grid-template-columns: $table-template-columns;
+  align-items: center;
+  padding: $table-padding;
+  column-gap: $table-column-gap;
+
+  span {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .index {
+    text-align: center;
+  }
+
+  .sortable {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+.list {
+  display: grid;
+  grid-template-columns: $table-template-columns;
+  align-items: center;
+  padding: $table-padding;
+  row-gap: 2rem;
+  column-gap: $table-column-gap;
+  color: $primary-dark-color;
+
+  .index {
+    font-size: 1rem;
+    font-weight: 900;
+    text-align: center;
+  }
+
+  .pool {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    color: $primary-dark-color;
+
+    img {
+      min-width: 1.5rem;
+      max-width: 1.5rem;
+      min-height: 1.5rem;
+      max-height: 1.5rem;
+
+      @include round-image;
+    }
+
+    span {
+      font-size: 1rem;
+      font-weight: 900;
+    }
+  }
+
+  .value {
+    text-align: end;
+    font-weight: 500;
+  }
+}

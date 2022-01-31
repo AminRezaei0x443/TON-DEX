@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { liquidityChanges, volumeInfo } from "../../api/info";
+import { listPools } from "../../api/pool";
 import { RootState } from "../store";
 import { InfoState } from "../types/info";
 
@@ -7,7 +8,8 @@ const initialState :InfoState ={
   overview: {
     liquidity:null,
     volume: null
-  }
+  },
+  topPools: null
 };
 
 export const retrieveLiquiditiesOverview = createAsyncThunk(
@@ -24,6 +26,13 @@ export const retrieveVolumeOverview = createAsyncThunk(
   }
 );
 
+export const retrieveTopPools = createAsyncThunk(
+  "info/retrieveTopPools",
+  async () => {
+    return await listPools(0);
+  }
+);
+
 export const infoSlice = createSlice({
   initialState,
   name:"info",
@@ -35,6 +44,9 @@ export const infoSlice = createSlice({
     });
     builder.addCase(retrieveVolumeOverview.fulfilled, (state, { payload }) => {
       state.overview.volume = payload;
+    });
+    builder.addCase(retrieveTopPools.fulfilled, (state, { payload }) => {
+      state.topPools = payload;
     });
   }
 });

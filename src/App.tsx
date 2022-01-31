@@ -9,6 +9,7 @@ import Notifications from "./components/Notifications";
 import InfoPage from "./pages/Info";
 import LiquidityPage from "./pages/Liquidity";
 import NotFound from "./pages/NotFound";
+import PoolInfoPage from "./pages/PoolInfo";
 import SwapPage from "./pages/Swap";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { selectAccount } from "./redux/reducers/account";
@@ -30,8 +31,9 @@ function App() {
       <div className="pageContent">
         <Routes>
           <Route path="/" element={<SwapPage/>}/>
-          <Route path="/liquidity" element={<LiquidityPage />}/>
-          <Route path="/info" element={<InfoPage />}/>
+          <Route path="liquidity" element={<LiquidityPage />}/>
+          <Route path="info" element={<InfoPage />}/>
+          <Route path="info/:address" element={<PoolInfoPage />}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
       </div>

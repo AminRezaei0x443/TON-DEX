@@ -1,0 +1,28 @@
+@import "../../assets/styles/colors";
+
+.content {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 48px;
+  padding: 0 200px 50px;
+}
+
+.section {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1.5rem;
+
+  h3 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 0;
+    color: $primary-dark-color;
+  }
+}
+
+.overview {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  gap: 10px;
+}

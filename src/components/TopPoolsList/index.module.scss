@@ -7,6 +7,7 @@
   border-radius: $border-radius;
   padding: 2rem;
   background-color: white;
+  overflow-x: scroll;
 
   hr {
     border: none;
@@ -78,7 +79,7 @@ $table-column-gap: 0.5rem;
 
   .pool {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     align-items: center;
     justify-content: flex-start;
     gap: 0.5rem;

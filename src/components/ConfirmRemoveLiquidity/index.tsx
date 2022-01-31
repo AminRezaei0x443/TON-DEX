@@ -30,7 +30,7 @@ export default function ConfirmRemoveLiquidity() {
     <TransactionInfo />
     <Button
       buttonType="primaryLarge"
-      title="Confirm Supply"
+      title="Confirm Remove"
       onClick={handleConfirmClick}/>
   </div>;
 }
